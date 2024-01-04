@@ -56,6 +56,8 @@ public class User extends DateAudit {
 
 	private String providerId;
 
+	private Integer gender;
+
 	@Column(name = "is_locked")
 	private Boolean isLocked;
 
