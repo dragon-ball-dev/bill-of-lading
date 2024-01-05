@@ -1,5 +1,6 @@
 package com.cntt.billoflading.domain.models;
 
+import com.cntt.billoflading.domain.enums.ServiceDeliver;
 import com.cntt.billoflading.domain.models.audit.DateAudit;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -19,12 +20,11 @@ public class Service extends DateAudit {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-
     @Column(nullable = false)
     private Boolean emailVerified = false;
 
     @Column(nullable = false)
-    private String name;
+    private ServiceDeliver serviceDeliver;
 
     @Column(nullable = false)
     private Long price;
@@ -37,5 +37,8 @@ public class Service extends DateAudit {
 
     @Column(nullable = false)
     private Double weight;
+
+    @Column(nullable = false)
+    private String estimatedTime ;
 
 }
