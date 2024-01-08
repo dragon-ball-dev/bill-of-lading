@@ -2,11 +2,7 @@ package com.cntt.billoflading.domain.models;
 
 import com.cntt.billoflading.domain.enums.OrderStatus;
 import com.cntt.billoflading.domain.models.audit.DateAudit;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
 import java.util.HashSet;
@@ -18,6 +14,7 @@ import java.util.Set;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 public class Order extends DateAudit {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -34,8 +31,8 @@ public class Order extends DateAudit {
     private Long delivery_fee;
 
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "service_id", nullable = false)
-    private Service service_id;
+    @JoinColumn(name = "service_transportation _id", nullable = false)
+    private ServiceTransportation ServiceTransportation_Id;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "category_id", nullable = false)

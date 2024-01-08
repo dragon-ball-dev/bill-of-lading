@@ -1,8 +1,6 @@
 package com.cntt.billoflading.domain.dto;
 
 import com.cntt.billoflading.domain.enums.OrderStatus;
-import com.cntt.billoflading.domain.models.Category;
-import com.cntt.billoflading.domain.models.Service;
 import com.cntt.billoflading.domain.models.Stock;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -25,9 +23,9 @@ public class OrderDTO {
 
     private Long delivery_fee;
 
-    private Service service;
+    private Long ServiceTransportation_Id;
 
-    private Category category;
+    private Long category_id;
 
     private String country;
 
@@ -40,6 +38,9 @@ public class OrderDTO {
     private Double cod;
 
     private Stock stock ;
+
+    private Double weight;
+
 
 
 }
