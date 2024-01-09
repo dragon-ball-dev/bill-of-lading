@@ -6,6 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.ColumnDefault;
 
 import javax.persistence.*;
 
@@ -15,7 +16,7 @@ import javax.persistence.*;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class ServiceTransportation extends DateAudit {
+public class ServiceTransportation extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -28,8 +29,7 @@ public class ServiceTransportation extends DateAudit {
 
     @Column(nullable = false)
     private Long price;
-
-    @Column(columnDefinition = "VND")
+    @ColumnDefault(value = "'VND'")
     private String currency;
 
     @Column(nullable = false)

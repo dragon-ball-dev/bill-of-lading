@@ -12,7 +12,7 @@ public interface OrderService {
     MessageResponse CancelOrder(Long id);
     MessageResponse UpdateStatusOrder(Long id, OrderStatus orderStatus);
     OrderDTO GetOrderById(Long id);
-    Page<Order> getPagingOrderByStatusAndUser(long userId, OrderStatus orderStatus, Integer pageNo, Integer pageSize);
+    Page<OrderDTO> getPagingOrderByStatusAndUser(long userId, OrderStatus orderStatus, Integer pageNo, Integer pageSize);
     Page<OrderDTO> getPagingOrderByStock(long stockId, Integer pageNo, Integer pageSize);
     Page<OrderDTO> getPagingOrderByServiceAndUser(long userId, int ServiceId, Integer pageNo, Integer pageSize);
 

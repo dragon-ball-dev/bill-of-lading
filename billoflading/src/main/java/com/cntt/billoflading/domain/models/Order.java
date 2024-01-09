@@ -9,13 +9,13 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Entity
-@Table(name = "order")
+@Table(name = "`order`")
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class Order extends DateAudit {
+public class Order extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -25,18 +25,18 @@ public class Order extends DateAudit {
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "user_id", nullable = false)
-    private User user_id;
+    private User user;
 
     @Column(nullable = false)
     private Long delivery_fee;
 
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "service_transportation _id", nullable = false)
-    private ServiceTransportation ServiceTransportation_Id;
+    @JoinColumn(name = "service_transportation_id", nullable = false)
+    private ServiceTransportation serviceTransportation;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "category_id", nullable = false)
-    private Category category_id;
+    private Category category;
 
     @Column(nullable = false)
     private String country;
