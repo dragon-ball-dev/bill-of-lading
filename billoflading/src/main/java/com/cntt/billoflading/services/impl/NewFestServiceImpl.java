@@ -43,7 +43,7 @@ public class NewFestServiceImpl extends BaseService implements NewFestService {
 
     @Override
     public NewFestRequest updateNewFeat(Long id, NewFestRequest newFestRequest) {
-        NewFest newFest = newFestRepository.findById(id).orElseThrow(() -> new BadRequestException("Không tồn tại tin tức");
+        NewFest newFest = newFestRepository.findById(id).orElseThrow(() -> new BadRequestException("Không tồn tại tin tức"));
         newFest.setDescription(newFestRequest.getDescription());
         newFest.setTitle(newFestRequest.getTitle());
         newFest.setImageUrl(newFestRequest.getImageUrl());
