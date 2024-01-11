@@ -13,5 +13,5 @@ public class DistrictRequest {
 
     private String name;
 
-    private Long ProvinceId;
+    private Long provinceId;
 }

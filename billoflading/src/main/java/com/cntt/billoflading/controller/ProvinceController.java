@@ -1,5 +1,6 @@
 package com.cntt.billoflading.controller;
 
+import com.cntt.billoflading.services.ProvinceService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -8,4 +9,6 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/province")
 @RequiredArgsConstructor
 public class ProvinceController {
+
+    private final ProvinceService provinceService;
 }
