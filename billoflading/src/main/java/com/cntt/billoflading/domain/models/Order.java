@@ -27,7 +27,7 @@ public class Order extends BaseEntity {
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
-    @Column(nullable = false)
+    @Column(name = "delivery_fee",nullable = false)
     private Long delivery_fee;
 
     @ManyToOne(fetch = FetchType.EAGER)
@@ -41,10 +41,10 @@ public class Order extends BaseEntity {
     @Column(nullable = false)
     private String country;
 
-    @Column(nullable = false)
+    @Column(name = "receiver_info",nullable = false)
     private String receiver_info;
 
-    @Column(nullable = false)
+    @Column(name = "sender_info",nullable = false)
     private String sender_info;
 
     @Column(nullable = false)

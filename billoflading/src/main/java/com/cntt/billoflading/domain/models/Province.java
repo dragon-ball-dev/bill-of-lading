@@ -1,5 +1,6 @@
 package com.cntt.billoflading.domain.models;
 
+import com.cntt.billoflading.domain.enums.TypeProvince;
 import com.cntt.billoflading.domain.models.audit.DateAudit;
 import lombok.*;
 
@@ -21,5 +22,5 @@ public class Province extends BaseEntity {
     private String name;
 
     @Column(nullable = false)
-    private String type;
+    private TypeProvince type;
 }
