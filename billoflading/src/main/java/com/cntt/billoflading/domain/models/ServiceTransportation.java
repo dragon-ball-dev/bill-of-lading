@@ -5,10 +5,7 @@ import com.cntt.billoflading.domain.enums.ServiceScope;
 import com.cntt.billoflading.domain.enums.WeightService;
 import com.cntt.billoflading.domain.enums.WeightUnit;
 import com.cntt.billoflading.domain.models.audit.DateAudit;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import org.hibernate.annotations.ColumnDefault;
 
 import javax.persistence.*;
@@ -19,6 +16,7 @@ import javax.persistence.*;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 public class ServiceTransportation extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -31,13 +29,13 @@ public class ServiceTransportation extends BaseEntity {
     private ServiceScope serviceScope;
 
     @Column(nullable = false)
-    private Long price;
+    private Double price;
 
     @ColumnDefault(value = "'VND'")
     private String currency;
 
     @Column(nullable = false)
-    private WeightUnit unit;
+    private WeightUnit weightUnit;
 
     @Column(nullable = false)
     private WeightService weightService;
