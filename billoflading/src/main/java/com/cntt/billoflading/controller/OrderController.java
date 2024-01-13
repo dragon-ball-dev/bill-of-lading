@@ -11,7 +11,6 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -52,8 +51,7 @@ public class OrderController extends BaseController {
     private ResponseEntity<?> createOrder(
             @RequestBody OrderDTO orderDTO
     ){
-        orderService.CreateOrder(orderDTO);
-        return createSuccessResponse("Create a new order", HttpStatus.CREATED);
+        return createSuccessResponse("Create a new order",orderService.CreateOrder(orderDTO));
     }
 
     @PutMapping("/{id}")
@@ -71,8 +69,7 @@ public class OrderController extends BaseController {
             @PathVariable Long id,
             @RequestBody OrderDTO orderDTO
     ){
-        orderService.UpdateOrder(id,orderDTO);
-        return createSuccessResponse("update order", HttpStatus.CREATED);
+        return createSuccessResponse("update order", orderService.UpdateOrder(id,orderDTO));
     }
 
     @PutMapping("/cancel/{id}")
@@ -89,8 +86,7 @@ public class OrderController extends BaseController {
     private ResponseEntity<?> cancelOrder(
             @PathVariable Long id
     ){
-        orderService.CancelOrder(id);
-        return createSuccessResponse("cancel order", HttpStatus.CREATED);
+        return createSuccessResponse("cancel order",  orderService.CancelOrder(id));
     }
 
 }
