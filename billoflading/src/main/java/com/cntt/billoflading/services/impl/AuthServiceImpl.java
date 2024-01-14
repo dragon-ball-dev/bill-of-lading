@@ -5,11 +5,13 @@ package com.cntt.billoflading.services.impl;
 import com.cntt.billoflading.domain.enums.AuthProvider;
 import com.cntt.billoflading.domain.enums.RoleName;
 import com.cntt.billoflading.domain.models.Role;
+import com.cntt.billoflading.domain.models.Store;
 import com.cntt.billoflading.domain.models.User;
 import com.cntt.billoflading.domain.payload.request.*;
 import com.cntt.billoflading.domain.payload.response.MessageResponse;
 import com.cntt.billoflading.exception.BadRequestException;
 import com.cntt.billoflading.repository.RoleRepository;
+import com.cntt.billoflading.repository.StoreRepository;
 import com.cntt.billoflading.repository.UserRepository;
 import com.cntt.billoflading.secruity.TokenProvider;
 import com.cntt.billoflading.services.AuthService;
@@ -17,6 +19,9 @@ import com.cntt.billoflading.services.BaseService;
 import com.cntt.billoflading.services.FileStorageService;
 import org.apache.activemq.kaha.impl.index.BadMagicException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -37,7 +42,6 @@ import java.io.IOException;
 import java.net.URI;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
-import java.util.Base64;
 import java.util.Collections;
 import java.util.Objects;
 
@@ -65,10 +69,13 @@ public class AuthServiceImpl extends BaseService implements AuthService {
     @Autowired
     private FileStorageService fileStorageService;
 
+    @Autowired
+    private StoreRepository storeRepository;
+
 
     @Override
     public URI registerAccount(SignUpRequest signUpRequest) throws MessagingException, IOException {
-        if(userRepository.existsByEmail(signUpRequest.getEmail())) {
+        if (userRepository.existsByEmail(signUpRequest.getEmail())) {
             throw new BadRequestException("Email đã được sử dụng!!");
         }
 
@@ -79,9 +86,9 @@ public class AuthServiceImpl extends BaseService implements AuthService {
         if (!signUpRequest.getPassword().equals(signUpRequest.getConfirmPassword())) {
             throw new BadRequestException("Mật khẩu không khớp. Vui lòng thử lại.");
         }
-        
+
         if (!signUpRequest.getEmail().endsWith("@gmail.com")) {
-        	throw new BadRequestException("Định dạng email không hợp lệ. Vui lòng thử lại.");
+            throw new BadRequestException("Định dạng email không hợp lệ. Vui lòng thử lại.");
         }
 
         // Creating user's account
@@ -92,26 +99,31 @@ public class AuthServiceImpl extends BaseService implements AuthService {
         user.setPassword(signUpRequest.getPassword());
         user.setProvider(AuthProvider.local);
         user.setIsLocked(false);
-        user.setIsConfirmed(true);
-
-
         user.setPassword(passwordEncoder.encode(user.getPassword()));
-//        sendEmailConfirmed(signUpRequest.getEmail(),signUpRequest.getName());
+
+
 
         if (RoleName.ROLE_USER.equals(signUpRequest.getRole())) {
             Role userRole = roleRepository.findByName(RoleName.ROLE_USER)
                     .orElseThrow(() -> new IllegalArgumentException("User Role not set."));
-
+            user.setAddress(signUpRequest.getAddress());
+            user.setPhone(signUpRequest.getPhone());
             user.setRoles(Collections.singleton(userRole));
+            user.setIsConfirmed(true);
+            Store store = storeRepository.findById(signUpRequest.getStoreId()).get();
+            user.setStore(store);
             result = userRepository.save(user);
 
-        } else if(RoleName.ROLE_RENTALER.equals(signUpRequest.getRole())){
-            Role userRole = roleRepository.findByName(RoleName.ROLE_RENTALER)
+
+        } else if (RoleName.ROLE_CUSTOMER.equals(signUpRequest.getRole())) {
+            Role userRole = roleRepository.findByName(RoleName.ROLE_CUSTOMER)
                     .orElseThrow(() -> new IllegalArgumentException("User Role not set."));
             user.setAddress(signUpRequest.getAddress());
             user.setPhone(signUpRequest.getPhone());
             user.setRoles(Collections.singleton(userRole));
             result = userRepository.save(user);
+            user.setIsConfirmed(false);
+            sendEmailConfirmed(signUpRequest.getEmail(),signUpRequest.getName());
         } else {
             throw new IllegalArgumentException("Bạn không có quyền tạo tài khoản!!!!");
         }
@@ -124,6 +136,10 @@ public class AuthServiceImpl extends BaseService implements AuthService {
 
     @Override
     public String login(LoginRequest loginRequest) {
+        User user = userRepository.findByEmail(loginRequest.getEmail()).orElseThrow(() -> new BadRequestException("Tài khoản không tồn tại"));
+        if (!passwordEncoder.matches(loginRequest.getPassword(), user.getPassword())) {
+            throw new BadRequestException("Mật khẩu không chính xác");
+        }
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
                         loginRequest.getEmail(),
@@ -191,7 +207,7 @@ public class AuthServiceImpl extends BaseService implements AuthService {
 
     @Override
     public MessageResponse lockAccount(Long id) {
-        User user = userRepository.findById(id).orElseThrow(() -> new BadRequestException("Tài khoảng không tồn tại"));
+        User user = userRepository.findById(id).orElseThrow();
         if (user.getIsLocked().equals(true)) {
             user.setIsLocked(false);
         } else {
@@ -202,26 +218,31 @@ public class AuthServiceImpl extends BaseService implements AuthService {
     }
 
     @Override
-    public MessageResponse uploadProfile(MultipartFile file, String zalo, String facebook, String phone, String address) throws IOException {
+    public MessageResponse uploadProfile(MultipartFile file, String zalo, String facebook, String address) {
         User user = userRepository.findById(getUserId()).orElseThrow(() -> new BadRequestException("Tài khoảng không tồn tại"));
         user.setZaloUrl(zalo);
         user.setFacebookUrl(facebook);
         user.setAddress(address);
-        user.setPhone(phone);
-        String encodedString = Base64.getEncoder().encodeToString(file.getBytes());
-        user.setImageUrl("data:image/png;base64, " + encodedString);
-//        if (Objects.nonNull(file)) {
-//            String image = fileStorageService.storeFile(file).replace("photographer/files/", "");
-//            user.setImageUrl("http://localhost:8080/image/" + image);
-//        }
+        if (Objects.nonNull(file)) {
+            String image = fileStorageService.storeFile(file).replace("photographer/files/", "");
+            user.setImageUrl("http://localhost:8080/image/" + image);
+        }
         userRepository.save(user);
         return MessageResponse.builder().message("Thay thông tin cá nhân thành công.").build();
+    }
+
+
+    @Override
+    public Page<User> getAllAccount(String keyword, Integer pageNo, Integer pageSize) {
+        int page = pageNo == 0 ? pageNo : pageNo - 1;
+        Pageable pageable = PageRequest.of(page, pageSize);
+        return userRepository.searchingAccount(keyword, pageable);
     }
 
     public void sendEmailFromTemplate(String email) throws MessagingException, IOException {
 
         MimeMessage message = mailSender.createMimeMessage();
-        message.setFrom(new InternetAddress("Khanhak54@gmail.com"));
+        message.setFrom(new InternetAddress("khanhhn.hoang@gmail.com"));
         message.setRecipients(MimeMessage.RecipientType.TO, email);
         message.setSubject("Yêu cầu cấp lại mật khẩu!!!");
 
@@ -236,9 +257,9 @@ public class AuthServiceImpl extends BaseService implements AuthService {
         mailSender.send(message);
     }
 
-    public void sendEmailConfirmed(String email,String name) throws MessagingException, IOException {
+    public void sendEmailConfirmed(String email, String name) throws MessagingException, IOException {
         MimeMessage message = mailSender.createMimeMessage();
-        message.setFrom(new InternetAddress("Khanhak54@gmail.com"));
+        message.setFrom(new InternetAddress("khanhhn.hoang@gmail.com"));
         message.setRecipients(MimeMessage.RecipientType.TO, email);
         message.setSubject("Xác thực tài khoản.");
 

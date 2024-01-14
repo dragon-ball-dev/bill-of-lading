@@ -28,4 +28,6 @@ public class SignUpRequest {
     private String confirmPassword;
 
     private RoleName role;
+
+    private Integer storeId;
 }

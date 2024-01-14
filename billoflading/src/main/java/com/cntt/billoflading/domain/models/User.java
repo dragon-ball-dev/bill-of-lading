@@ -73,6 +73,11 @@ public class User extends DateAudit {
 
 	private String facebookUrl;
 
+	@ManyToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name = "store_id")
+	private Store store;
+
+
 	@ManyToMany(fetch = FetchType.EAGER)
 	@JoinTable(name = "user_roles", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "role_id"))
 	private Set<Role> roles = new HashSet<>();

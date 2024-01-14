@@ -1,14 +1,22 @@
 package com.cntt.billoflading.services.impl;
 
 
-
+import com.cntt.billoflading.domain.models.Message;
+import com.cntt.billoflading.domain.models.MessageChat;
 import com.cntt.billoflading.domain.models.User;
+import com.cntt.billoflading.domain.payload.DTO.MessageDTO;
 import com.cntt.billoflading.exception.ResourceNotFoundException;
+import com.cntt.billoflading.repository.MessageChatRepository;
+import com.cntt.billoflading.repository.MessageRepository;
 import com.cntt.billoflading.repository.UserRepository;
 import com.cntt.billoflading.services.BaseService;
 import com.cntt.billoflading.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
 @Service
 public class UserServiceImpl extends BaseService implements UserService {
@@ -18,7 +26,29 @@ public class UserServiceImpl extends BaseService implements UserService {
 
 	@Autowired
 	FileStorageServiceImpl fileStorageServiceImpl;
-
+	
+	@Autowired
+	MessageRepository messageRepository;
+	
+	@Autowired
+	MessageChatRepository messageChatRepository;
+	
+	@Override
+	public MessageDTO toMessageDTO(User user, Message message) {
+		String userName = "";
+		String imageUrl = "";
+		String last_message_text = ""; 
+		if (message.getReceiver().getEmail().equals(user.getEmail())) {
+			userName = message.getSender().getName();
+			imageUrl = message.getSender().getImageUrl();
+		}
+		else {
+			userName = message.getReceiver().getName();
+			imageUrl = message.getReceiver().getImageUrl();
+		}
+		last_message_text = message.getContent().get(message.getContent().size()-1).getContent();
+		return new MessageDTO(1L,userName, imageUrl, last_message_text);
+	}
 	@Override
 	public String updateImageUser(Long id, String image) {
 		try {
@@ -47,5 +77,93 @@ public class UserServiceImpl extends BaseService implements UserService {
 		}
 	}
 	
+	@Override
+	public List<MessageDTO> getMessageUser() {
+		List<MessageDTO> result = null;
+		try {
+			User user = userRepository.findById(getUserId()).get();
+			result = new ArrayList<>();
+			for (Message message : messageRepository.findBySender(user)) {
+				if (message.getReceiver().getId() != message.getSender().getId()) {
+					String lastMessage = message.getContent().get(message.getContent().size() - 1).getContent();
+					if (message.getContent().get(message.getContent().size() - 1).getSendBy()) {
+						if (getUserId() == message.getReceiver().getId())
+							lastMessage = "Bạn: " + lastMessage;
+					} else {
+						if (getUserId() == message.getSender().getId())
+							lastMessage = "Bạn: " + lastMessage;
+					}
+					result.add(new MessageDTO(message.getReceiver().getId(), message.getReceiver().getName(),
+							message.getReceiver().getImageUrl(), lastMessage));
+				}
+			}
+			for (Message message : messageRepository.findByReceiver(user)) {
+				if (message.getReceiver().getId() != message.getSender().getId()) {
+					String lastMessage = message.getContent().get(message.getContent().size() - 1).getContent();
+					if (message.getContent().get(message.getContent().size() - 1).getSendBy()) {
+						if (getUserId() == message.getReceiver().getId())
+							lastMessage = "Bạn: " + lastMessage;
+					} else {
+						if (getUserId() == message.getSender().getId())
+							lastMessage = "Bạn: " + lastMessage;
+					}
+					result.add(new MessageDTO(message.getSender().getId(), message.getSender().getName(),
+							message.getSender().getImageUrl(), lastMessage));
+				}
+			}
+
+			return result;
+		} catch (Exception e) {
+			return result;
+		}
+	}
+	@Override
+	public List<User> findMessageUser(String userName) {
+		List<User> result = new ArrayList<>();
+		for (User user : userRepository.findAll()) {
+			if (user.getName().toUpperCase().equals(userName.toUpperCase())) result.add(user);
+		}
+		return result;
+	}
+	@Override
+	public Message getMessageChatUser(Long userId, Long guestId) {
+		try {
+			User user = userRepository.findById(Math.min(userId, guestId)).get();
+			User guest = userRepository.findById(Math.max(userId, guestId)).get();
+			Message message = messageRepository.findBySenderAndReceiver(user, guest);
+			if (message != null) {
+				return message;
+			}
+			else {
+				message = new Message();
+				message.setSender(user);
+				message.setReceiver(guest);
+				messageRepository.save(message);
+			}
+			return message;
+		} catch (Exception e) {
+			return null;
+		}
+		
+	}
+	@Override
+	public String addChatUser(Long id, Long userId, MessageChat messageChat) {
+		try {
+			User sender = userRepository.findById(Math.min(id, userId)).get();
+			User receiver = userRepository.findById(Math.max(id, userId)).get();
+			Message message = messageRepository.findBySenderAndReceiver(sender,receiver);
+			MessageChat messageChat2 = new MessageChat();
+			messageChat2.setContent(messageChat.getContent());
+			messageChat2.setMessage(message);
+			messageChat2.setRead(false);
+			messageChat2.setSendBy(id > userId ? true : false);
+			messageChat2.setSentAt(new Date());
+			messageChatRepository.save(messageChat2);
+			return "Gửi tin nhắn thành công!!!";
+		} catch (Exception e) {
+			System.out.println(e.toString());
+			return "Gửi tin nhắn thất bại!!!";
+		}
+	}
 
 }

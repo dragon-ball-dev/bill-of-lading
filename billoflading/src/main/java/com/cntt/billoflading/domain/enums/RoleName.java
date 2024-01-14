@@ -3,7 +3,7 @@ package com.cntt.billoflading.domain.enums;
 public enum RoleName {
     ROLE_USER("ROLE_USER"),
     ROLE_ADMIN("ROLE_ADMIN"),
-    ROLE_RENTALER("ROLE_RENTALER");
+    ROLE_CUSTOMER("ROLE_CUSTOMER");
 
 
     private String value;

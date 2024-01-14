@@ -2,8 +2,10 @@ package com.cntt.billoflading.services;
 
 
 
+import com.cntt.billoflading.domain.models.User;
 import com.cntt.billoflading.domain.payload.request.*;
 import com.cntt.billoflading.domain.payload.response.MessageResponse;
+import org.springframework.data.domain.Page;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.mail.MessagingException;
@@ -27,5 +29,7 @@ public interface AuthService {
 
     MessageResponse lockAccount(Long id);
 
-    MessageResponse uploadProfile(MultipartFile file, String zalo, String facebook, String phone, String address) throws IOException;
+    MessageResponse uploadProfile(MultipartFile file, String zalo, String facebook, String address);
+
+    Page<User> getAllAccount(String keyword, Integer pageNo, Integer pageSize);
 }

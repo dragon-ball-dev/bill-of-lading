@@ -1,6 +1,7 @@
 package com.cntt.billoflading.controller;
 
 
+
 import com.cntt.billoflading.controller.base.BaseController;
 import com.cntt.billoflading.domain.payload.request.*;
 import com.cntt.billoflading.domain.payload.response.ApiResponse;
@@ -20,6 +21,7 @@ import java.io.IOException;
 @RestController
 @RequestMapping("/auth")
 @RequiredArgsConstructor
+@CrossOrigin
 public class AuthController extends BaseController {
 
     private final AuthService authService;
@@ -30,9 +32,15 @@ public class AuthController extends BaseController {
         return ResponseEntity.ok(new AuthResponse(authService.login(loginRequest)));
     }
 
+    @GetMapping("/get-all-account")
+    public ResponseEntity<?> getAllAccount(@RequestParam(required = false) String keyword,
+                                           @RequestParam Integer pageNo,
+                                           @RequestParam Integer pageSize){
+        return ResponseEntity.ok(authService.getAllAccount(keyword,pageNo,pageSize));
+    }
+
     @PostMapping("/signup")
     @Operation(summary = "Đăng kí tài khoản")
-
     public ResponseEntity<?> registerUser(@Valid @RequestBody SignUpRequest signUpRequest) throws MessagingException, IOException {
         return ResponseEntity.created(authService.registerAccount(signUpRequest))
                 .body(new ApiResponse(true, "User registered successfully@"));
@@ -70,9 +78,8 @@ public class AuthController extends BaseController {
     public ResponseEntity<?> changeImage(@RequestParam(required = false) MultipartFile file,
                                          @RequestParam(required = false) String zalo,
                                          @RequestParam(required = false) String facebook,
-                                         @RequestParam(required = false) String phone,
-                                         @RequestParam(required = false) String address)  throws IOException {
-        return ResponseEntity.ok(authService.uploadProfile(file, zalo, facebook, phone, address));
+                                         @RequestParam(required = false) String address) {
+        return ResponseEntity.ok(authService.uploadProfile(file, zalo, facebook, address));
     }
 
 

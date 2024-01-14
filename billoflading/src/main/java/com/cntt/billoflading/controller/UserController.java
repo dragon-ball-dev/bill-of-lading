@@ -29,8 +29,8 @@ public class UserController {
                 .orElseThrow(() -> new ResourceNotFoundException("User", "id", userPrincipal.getId()));
     }
 
-    @GetMapping("/rentaler/me")
-    @PreAuthorize("hasRole('RENTALER')")
+    @GetMapping("/customer/me")
+    @PreAuthorize("hasRole('CUSTOMER')")
     public User getRecruiter(@CurrentUser UserPrincipal userPrincipal) {
         return userRepository.findById(userPrincipal.getId())
                 .orElseThrow(() -> new ResourceNotFoundException("User", "id", userPrincipal.getId()));
