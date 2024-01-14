@@ -1,11 +1,14 @@
 package com.cntt.billoflading.services.impl;
 
 import com.cntt.billoflading.domain.dto.ServiceTransportationDTO;
+import com.cntt.billoflading.domain.enums.ServiceDeliver;
 import com.cntt.billoflading.domain.enums.ServiceScope;
+import com.cntt.billoflading.domain.models.Province;
 import com.cntt.billoflading.domain.models.ServiceTransportation;
 import com.cntt.billoflading.domain.payload.request.ServiceTransportationRequest;
 import com.cntt.billoflading.domain.payload.response.MessageResponse;
 import com.cntt.billoflading.mapper.CommonMapper;
+import com.cntt.billoflading.repository.ProvinceRepository;
 import com.cntt.billoflading.repository.ServiceTransportationRepository;
 import com.cntt.billoflading.services.BaseService;
 import com.cntt.billoflading.services.ServiceTransportationService;
@@ -25,53 +28,24 @@ import static java.lang.Math.abs;
 @RequiredArgsConstructor
 public class ServiceTransportationServiceImp extends BaseService implements ServiceTransportationService {
     private final ServiceTransportationRepository serviceTransportationRepository;
+    private final ProvinceRepository provinceRepository;
     private final CommonMapper mapper;
     private final MapperUtils mapperUtils;
 
 
     @Override
     public ServiceTransportationDTO calculateFeeService(ServiceTransportationRequest serviceTransportationRequest) {
-        int typeAreaSend = serviceTransportationRequest.getProvinceSend().getType().getValue();
-        int typeAreaReceiver = serviceTransportationRequest.getProvinceReceive().getType().getValue();
 
-        String ProvinceSend = serviceTransportationRequest.getProvinceSend().getName();
-        String ProvinceReceiver = serviceTransportationRequest.getProvinceReceive().getName();
-
-        int serviceScope = 0;
-        int weight = weightClassify(serviceTransportationRequest.getWeight());
-        if (weight == -1) throw new IllegalArgumentException("weight is not valid!");
-
-        if (typeAreaReceiver == typeAreaSend) {
-            if (ProvinceSend.equals(ProvinceReceiver)) {
-                serviceScope = ServiceScope.INTERNAL_PROVINCE.getValue();
-            } else {
-                serviceScope = ServiceScope.INTERNAL_AREA.getValue();
-            }
-        } else if (abs(typeAreaReceiver - typeAreaSend) == 1) {
-            serviceScope = ServiceScope.NEAR_AREA.getValue();
-        } else if (abs(typeAreaReceiver - typeAreaSend) == 2) {
-            serviceScope = ServiceScope.SOUTH_NORTH.getValue();
-        }
-
-        ServiceTransportation serviceTransportation = serviceTransportationRepository.
-                findServiceForCalculate(serviceScope, weight, serviceTransportationRequest.getDeliveryService().getValue())
-                .orElseThrow(() -> new IllegalArgumentException("ServiceTransportation is not exist!"));
-
-        if (weight == 7) {
-            weight--;
-            ServiceTransportation serviceTransportationOver = serviceTransportationRepository.
-                    findServiceForCalculate(serviceScope, weight, serviceTransportationRequest.getDeliveryService().getValue())
-                    .orElseThrow(() -> new IllegalArgumentException("ServiceTransportation is not exist!"));
-
-            double overFee = serviceTransportationOver.getPrice() + calculateWeight(serviceTransportationRequest.getWeight())
-                    * serviceTransportationOver.getPrice();
-
-            ServiceTransportationDTO serviceTransportationDTO = mapper.convertToResponse(serviceTransportationOver, ServiceTransportationDTO.class);
-            serviceTransportationDTO.setPrice(overFee);
-            return serviceTransportationDTO;
-        }
-
-        return mapper.convertToResponse(serviceTransportation, ServiceTransportationDTO.class);
+        Province receiver_province = provinceRepository.findById(serviceTransportationRequest.getProvinceReceiveId())
+                .orElseThrow(() -> new IllegalArgumentException("Receiver province is not exist!"));
+        Province sender_province = provinceRepository.findById(serviceTransportationRequest.getProvinceSendId())
+                .orElseThrow(() -> new IllegalArgumentException("Sender province is not exist!"));
+        return mapper.convertToResponse(calculateDeliverFee(receiver_province
+                , sender_province
+                ,serviceTransportationRequest.getCOD()
+                ,serviceTransportationRequest.getWeight()
+                ,serviceTransportationRequest.getDeliveryService()
+        ), ServiceTransportationDTO.class);
     }
 
 
@@ -99,6 +73,43 @@ public class ServiceTransportationServiceImp extends BaseService implements Serv
     private double calculateWeight(long weight) {
         if (weight < 2000) return 0;
         return (double) weight / 2000;
+    }
+
+    public ServiceTransportation calculateDeliverFee(Province receiver, Province sender, Long COD, Long weight, ServiceDeliver serviceDeliver) {
+        int weightClassification = weightClassify(weight);
+        if (weightClassification == -1) throw new IllegalArgumentException("weight is not valid!");
+
+        int typeAreaSend = sender.getType().getValue();
+        int typeAreaReceiver = receiver.getType().getValue();
+        int serviceScope = 0;
+
+        if (typeAreaReceiver == typeAreaSend) {
+            if (sender.equals(receiver)) {
+                serviceScope = ServiceScope.INTERNAL_PROVINCE.getValue();
+            } else {
+                serviceScope = ServiceScope.INTERNAL_AREA.getValue();
+            }
+        } else if (abs(typeAreaReceiver - typeAreaSend) == 1) {
+            serviceScope = ServiceScope.NEAR_AREA.getValue();
+        } else if (abs(typeAreaReceiver - typeAreaSend) == 2) {
+            serviceScope = ServiceScope.SOUTH_NORTH.getValue();
+        }
+
+        ServiceTransportation serviceTransportation = serviceTransportationRepository.
+                findServiceForCalculate(serviceScope, weightClassification, serviceDeliver.getValue())
+                .orElseThrow(() -> new IllegalArgumentException("ServiceTransportation is not exist!"));
+
+        if (weight == 7) {
+            weight--;
+            ServiceTransportation serviceTransportationOver = serviceTransportationRepository.
+                    findServiceForCalculate(serviceScope, weightClassification, serviceDeliver.getValue())
+                    .orElseThrow(() -> new IllegalArgumentException("ServiceTransportation is not exist!"));
+            serviceTransportationOver.setPrice(serviceTransportationOver.getPrice() + COD/20 + calculateWeight(weight)
+                    * serviceTransportationOver.getPrice());
+            return  serviceTransportationOver;
+        }
+        serviceTransportation.setPrice(serviceTransportation.getPrice() + COD/20) ;
+        return serviceTransportation;
     }
 
     @Override

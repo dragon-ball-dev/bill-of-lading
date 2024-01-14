@@ -18,14 +18,13 @@ import java.util.Set;
 @Service
 @RequiredArgsConstructor
 public class StockServiceImp extends BaseService implements StockService {
-    private final MapperUtils mapperUtils;
     private final StockRepository stockRepository;
     private final UserRepository userRepository;
     @Override
     public MessageResponse createStock(StockRequest stockRequest) {
         Stock stock = Stock.builder()
                 .name(stockRequest.getName()).build();
-        User user = userRepository.findById(stockRequest.getUser().getId())
+        User user = userRepository.findById(stockRequest.getUserId())
                 .orElseThrow(() -> new IllegalArgumentException("user is not exist!"));
         Set<User> users = new HashSet<>();
         users.add(user);
@@ -44,7 +43,7 @@ public class StockServiceImp extends BaseService implements StockService {
     }
 
     @Override
-    public MessageResponse deleteStock(StockRequest stockRequest) {
+    public MessageResponse deleteStock(long id) {
         return null;
     }
 

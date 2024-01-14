@@ -7,6 +7,6 @@ import com.cntt.billoflading.domain.payload.response.MessageResponse;
 public interface StockService {
     MessageResponse createStock(StockRequest stockRequest);
     MessageResponse updateNameStock(Long id, String name);
-    MessageResponse deleteStock(StockRequest stockRequest);
+    MessageResponse deleteStock(long id);
     Stock getStockById(Long id);
 }

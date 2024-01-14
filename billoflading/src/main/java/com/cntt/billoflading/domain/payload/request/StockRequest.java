@@ -14,5 +14,5 @@ import java.util.Set;
 @AllArgsConstructor
 public class StockRequest {
     private String name;
-    private User user;
+    private Long userId;
 }

@@ -1,11 +1,11 @@
 package com.cntt.billoflading.domain.enums;
 
 public enum ServiceDeliver {
-    SHIPPING_ECONOMICAL(20),
-    SHIPPING_FAST(21),
-    SHIPPING_EXPRESS(22),
-    SHIPPING_INTERNAL(23),
-    SHIPPING_EXTERNAL(24);
+    SHIPPING_ECONOMICAL(0),
+    SHIPPING_FAST(1),
+    SHIPPING_EXPRESS(2),
+    SHIPPING_INTERNAL(3),
+    SHIPPING_EXTERNAL(4);
 
 
     private int value;

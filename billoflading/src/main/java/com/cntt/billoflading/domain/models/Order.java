@@ -1,7 +1,6 @@
 package com.cntt.billoflading.domain.models;
 
 import com.cntt.billoflading.domain.enums.OrderStatus;
-import com.cntt.billoflading.domain.models.audit.DateAudit;
 import lombok.*;
 
 import javax.persistence.*;
@@ -41,17 +40,25 @@ public class Order extends BaseEntity {
     @Column(nullable = false)
     private String country;
 
+    @OneToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "Receiver_province_id", nullable = false)
+    private Province Receiver_province;
+
     @Column(name = "receiver_info",nullable = false)
     private String receiver_info;
 
     @Column(name = "sender_info",nullable = false)
     private String sender_info;
 
-    @Column(nullable = false)
-    private Double weight;
+    @OneToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "sender_province_id", nullable = false)
+    private Province sender_province;
 
     @Column(nullable = false)
-    private Double cod;
+    private Long weight;
+
+    @Column(nullable = false)
+    private Long cod;
 
     @Column(nullable = false)
     private OrderStatus status;

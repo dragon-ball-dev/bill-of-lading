@@ -1,18 +1,18 @@
 package com.cntt.billoflading.domain.enums;
 
 public enum WeightUnit {
-    GRAM("GRAM"),
-    KILOGRAM("KILOGRAM"),
-    TON("TON"),;
+    GRAM(0),
+    KILOGRAM(1),
+    TON(2);
 
 
-    private String value;
+    private int value;
 
-    WeightUnit(String value){
+    WeightUnit(int value){
         this.value = value;
     }
 
-    public String getValue(){
+    public int getValue(){
         return this.value;
     }
 }

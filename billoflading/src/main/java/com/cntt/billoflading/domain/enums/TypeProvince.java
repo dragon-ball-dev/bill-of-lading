@@ -1,17 +1,17 @@
 package com.cntt.billoflading.domain.enums;
 
 public enum TypeProvince {
-    PROVINCE_NORTH(1),
-    PROVINCE_MIDDlE(2),
-    PROVINCE_SOUTH(3);
+    PROVINCE_NORTH(0),
+    PROVINCE_MIDDlE(1),
+    PROVINCE_SOUTH(2);
 
-    private Integer value;
+    private int value;
 
-    TypeProvince(Integer value){
+    TypeProvince(int value){
         this.value = value;
     }
 
-    public Integer getValue(){
+    public int getValue(){
         return this.value;
     }
 }

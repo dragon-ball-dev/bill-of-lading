@@ -14,13 +14,9 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 public class ServiceTransportationRequest {
-    private Province provinceSend;
+    private Long provinceSendId;
 
-    private District districtSend;
-
-    private Province provinceReceive;
-
-    private District districtReceive;
+    private Long provinceReceiveId;
 
     private Long weight;
 

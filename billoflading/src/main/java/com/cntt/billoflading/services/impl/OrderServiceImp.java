@@ -24,7 +24,9 @@ public class OrderServiceImp extends BaseService implements OrderService {
     private final OrderRepository orderRepository;
     private final ServiceTransportationRepository serviceTransportationRepository;
     private final StockRepository stockRepository;
+    private final ProvinceRepository provinceRepository;
     private final CommonMapper mapper;
+    private final ServiceTransportationServiceImp serviceTransportationServiceImp;
 
 
     @Override
@@ -42,14 +44,30 @@ public class OrderServiceImp extends BaseService implements OrderService {
                     .orElseThrow(() -> new IllegalArgumentException("Category is not exist!"));
             order.setCategory(category);
         }
-        if (orderDTO.getServiceTransportation_Id() != null) {
-            ServiceTransportation serviceTransportation = serviceTransportationRepository.findById(orderDTO.getServiceTransportation_Id())
-                    .orElseThrow(() -> new IllegalArgumentException("Service Transportation is not exist!"));
+
+        if (orderDTO.getReceiver_Province_Id() != null) {
+            Province receiver_province = provinceRepository.findById(orderDTO.getReceiver_Province_Id())
+                    .orElseThrow(() -> new IllegalArgumentException("Receiver province is not exist!"));
+            Province sender_province = provinceRepository.findById(orderDTO.getSender_Province_Id())
+                    .orElseThrow(() -> new IllegalArgumentException("Sender province is not exist!"));
+
+            order.setReceiver_province(receiver_province);
+            order.setSender_province(sender_province);
+
+            ServiceTransportation serviceTransportation = serviceTransportationServiceImp
+                    .calculateDeliverFee(receiver_province
+                            ,sender_province,
+                            orderDTO.getCod(),
+                            orderDTO.getWeight(),
+                            orderDTO.getServiceDeliver());
             order.setServiceTransportation(serviceTransportation);
+            order.setDelivery_fee(serviceTransportation.getPrice().longValue());
         }
+        if (orderDTO.getUser_id() != null) {
             User user = userRepository.findById(getUserId())
-                .orElseThrow(() -> new IllegalArgumentException("User is not exist!"));
-        order.setUser(user);
+                    .orElseThrow(() -> new IllegalArgumentException("User is not exist!"));
+            order.setUser(user);
+        }
         order.setCreatedAt(LocalDateTime.now());
         order.setStatus(OrderStatus.STATUS_PENDING);
         orderRepository.save(order);
@@ -66,11 +84,6 @@ public class OrderServiceImp extends BaseService implements OrderService {
         order.setSender_info(orderDTO.getSender_info());
         order.setCountry(orderDTO.getCountry());
         order.setWeight(order.getWeight());
-        if (orderDTO.getServiceTransportation_Id() != null) {
-            ServiceTransportation serviceTransportation = serviceTransportationRepository.findById(orderDTO.getServiceTransportation_Id())
-                    .orElseThrow(() -> new IllegalArgumentException("Service Transportation is not exist!"));
-            order.setServiceTransportation(serviceTransportation);
-        }
         if (orderDTO.getCategory_id() != null) {
             Category category = categoryRepository.findById(orderDTO.getCategory_id())
                     .orElseThrow(() -> new IllegalArgumentException("Category is not exist!"));
