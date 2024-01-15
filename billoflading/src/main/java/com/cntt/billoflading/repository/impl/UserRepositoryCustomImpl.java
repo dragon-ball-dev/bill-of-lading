@@ -23,12 +23,12 @@ public class UserRepositoryCustomImpl implements UserRepositoryCustom {
     @PersistenceContext
     private EntityManager em;
 
-    private static final String FROM_USER = "from ecommerce.users u ";
+    private static final String FROM_USER = "from bill_of_landing.users u ";
     @Override
     public Page<User> searchingAccount(String keyword, Pageable pageable) {
         StringBuilder strQuery = new StringBuilder();
         strQuery.append(FROM_USER);
-        strQuery.append(" where 1=1 AND u.email NOT IN ('master@gmail.com') ");
+        strQuery.append(" where 1=1 AND u.email NOT IN ('admin@gmail.com') ");
 
         Map<String, Object> params = new HashMap<>();
         if (Objects.nonNull(keyword) && !keyword.isEmpty()) {
@@ -41,6 +41,22 @@ public class UserRepositoryCustomImpl implements UserRepositoryCustom {
         String strCountQuery = "SELECT COUNT(DISTINCT u.id)" + strQuery;
 
         return BaseRepository.getPagedNativeQuery(em,strSelectQuery, strCountQuery, params, pageable, User.class);
+    }
+
+    @Override
+    public Page<User> searchingAccount(Pageable pageable) {
+        StringBuilder strQuery = new StringBuilder();
+        strQuery.append(FROM_USER + "inner join user_roles ur on u.id = ur.user_id ");
+        strQuery.append(" where 1=1  AND  ur.role_id = 2");
+
+        Map<String, Object> params = new HashMap<>();
+
+        String strSelectQuery = "SELECT * " + strQuery;
+
+        String strCountQuery = "SELECT COUNT(DISTINCT u.id)" + strQuery;
+
+        return BaseRepository.getPagedNativeQuery(em,strSelectQuery, strCountQuery, params, pageable, User.class);
+
     }
 
     @Override

@@ -19,7 +19,7 @@ public class NewFestRepositoryCustomImpl implements NewFestRepositoryCustom {
     @PersistenceContext
     private EntityManager em;
 
-    private static final String FROM_NEW_FETS = "from bill_of_landing.new_fets n ";
+    private static final String FROM_NEW_FETS = "from bill_of_landing.new_fest n ";
     @Override
     public Page<NewFest> searchingNewFeats(String keyword, Pageable pageable) {
         StringBuilder strQuery = new StringBuilder();

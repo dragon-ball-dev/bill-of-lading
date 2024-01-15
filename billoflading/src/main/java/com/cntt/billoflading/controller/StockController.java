@@ -21,6 +21,11 @@ import org.springframework.web.bind.annotation.*;
 public class StockController extends BaseController {
     private final StockService stockService;
 
+    @GetMapping
+    public ResponseEntity<?> getAllStock(@RequestParam Integer pageNo, @RequestParam Integer pageSize) {
+        return createSuccessResponse(stockService.getAllOrder(pageNo, pageSize));
+    }
+
     @GetMapping("/{id}")
     @Operation(summary = "get stock information")
     @ApiResponse(responseCode = Constant.API_RESPONSE.API_STATUS_OK_STR, description = "get stock successful",

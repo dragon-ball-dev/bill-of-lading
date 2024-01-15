@@ -36,8 +36,8 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     public CategoryRequest createCategory(CategoryRequest categoryRequest) {
-        categoryRequest.setStatus("ENABLE");
         Category category = mapperUtils.convertToEntity(categoryRequest, Category.class);
+        category.setStatus("ENABLE");
         categoryRepository.save(category);
         return categoryRequest;
     }
@@ -46,7 +46,6 @@ public class CategoryServiceImpl implements CategoryService {
     public CategoryRequest updateCategory(Long id, CategoryRequest categoryRequest) {
         Category category = categoryRepository.findById(id).orElseThrow(() -> new BadRequestException("Không tồn tại danh mục"));
         category.setName(categoryRequest.getName());
-        category.setStatus(categoryRequest.getStatus());
         categoryRepository.save(category);
         return categoryRequest;
     }

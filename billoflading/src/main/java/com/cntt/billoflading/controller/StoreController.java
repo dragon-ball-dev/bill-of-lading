@@ -21,6 +21,11 @@ public class StoreController extends BaseController {
         return createSuccessResponse("Update store", "Cập nhật cửa hàng thành công");
     }
 
+    @GetMapping("/{id}")
+    public ResponseEntity<?> getById(@PathVariable Integer id ){
+        return createSuccessResponse(storeService.getById(id));
+    }
+
     @PostMapping("create-store")
     public ResponseEntity<?> createStore(@RequestBody StoreRequest storeRequest) {
         storeService.createStore(storeRequest);

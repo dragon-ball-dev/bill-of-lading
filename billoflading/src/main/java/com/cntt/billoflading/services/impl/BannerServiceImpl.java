@@ -32,6 +32,7 @@ public class BannerServiceImpl extends BaseService implements BannerService {
     @Override
     public Banner createBanner(Banner banner) {
         banner.setUserId(getUserId());
+        banner.setStatus(false);
         bannerRepository.save(banner);
         return banner;
     }

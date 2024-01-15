@@ -100,13 +100,13 @@ public class AuthServiceImpl extends BaseService implements AuthService {
         user.setProvider(AuthProvider.local);
         user.setIsLocked(false);
         user.setPassword(passwordEncoder.encode(user.getPassword()));
+        user.setAddress(signUpRequest.getAddress());
 
 
 
         if (RoleName.ROLE_USER.equals(signUpRequest.getRole())) {
             Role userRole = roleRepository.findByName(RoleName.ROLE_USER)
                     .orElseThrow(() -> new IllegalArgumentException("User Role not set."));
-            user.setAddress(signUpRequest.getAddress());
             user.setPhone(signUpRequest.getPhone());
             user.setRoles(Collections.singleton(userRole));
             user.setIsConfirmed(true);
@@ -118,7 +118,6 @@ public class AuthServiceImpl extends BaseService implements AuthService {
         } else if (RoleName.ROLE_CUSTOMER.equals(signUpRequest.getRole())) {
             Role userRole = roleRepository.findByName(RoleName.ROLE_CUSTOMER)
                     .orElseThrow(() -> new IllegalArgumentException("User Role not set."));
-            user.setAddress(signUpRequest.getAddress());
             user.setPhone(signUpRequest.getPhone());
             user.setRoles(Collections.singleton(userRole));
             result = userRepository.save(user);

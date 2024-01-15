@@ -36,7 +36,7 @@ public class DistrictServiceImpl implements DistrictService {
     public DistrictRequest createDistrict(DistrictRequest districtRequest) {
         Province province = provinceRepository.findById(districtRequest.getProvinceId()).orElseThrow(() -> new BadRequestException("Tỉnh không tồn tại"));
         District district = new District();
-        district.setName(district.getName());
+        district.setName(districtRequest.getName());
         district.setProvince(province);
         districtRepository.save(district);
         return districtRequest;

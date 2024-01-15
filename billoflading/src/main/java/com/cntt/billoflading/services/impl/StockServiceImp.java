@@ -10,6 +10,9 @@ import com.cntt.billoflading.services.BaseService;
 import com.cntt.billoflading.services.StockService;
 import com.cntt.billoflading.utils.MapperUtils;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.HashSet;
@@ -51,5 +54,12 @@ public class StockServiceImp extends BaseService implements StockService {
     public Stock getStockById(Long id) {
         return stockRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Stock is not exist!"));
+    }
+
+    @Override
+    public Page<Stock> getAllOrder(Integer pageNo, Integer pageSize) {
+        int page = pageNo == 0 ? pageNo : pageNo - 1;
+        Pageable pageable = PageRequest.of(page, pageSize);
+        return stockRepository.findAll(pageable);
     }
 }

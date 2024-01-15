@@ -25,4 +25,5 @@ public class Banner {
     private Double width;
     private Double height;
     private Long userId;
+    private Boolean status;
 }
