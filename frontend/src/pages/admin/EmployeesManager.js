@@ -25,6 +25,7 @@ function EmployeeManager(props) {
 
     const fetchData = () => {
         getAllAccountOfAdmin(currentPage, itemsPerPage, searchQuery).then(response => {
+            console.log(response.content)
             setTableData(response.content);
             setTotalItems(response.totalElements);
         }).catch(
@@ -78,7 +79,7 @@ function EmployeeManager(props) {
     if (!props.authenticated) {
         return <Navigate
             to={{
-                pathname: "/",
+                pathname: "/login-admin",
                 state: { from: location }
             }} />;
     }
@@ -122,6 +123,7 @@ function EmployeeManager(props) {
                                             <th className="sorting sorting_asc" tabindex="0" aria-controls="datatables-buttons" rowspan="1" colspan="1"  >Số điện thoại</th>
                                             <th className="sorting sorting_asc" tabindex="0" aria-controls="datatables-buttons" rowspan="1" colspan="1"  >Email</th>
                                             <th className="sorting sorting_asc" tabindex="0" aria-controls="datatables-buttons" rowspan="1" colspan="1"  >Chi nhánh quản lý</th>
+                                            <th className="sorting sorting_asc" tabindex="0" aria-controls="datatables-buttons" rowspan="1" colspan="1" style={{ width: "74px" }} >Quyền</th>
                                             <th className="sorting" tabindex="0" aria-controls="datatables-buttons" rowspan="1" colspan="1" style={{ width: "75px" }} >Chế độ</th></tr>
                                     </thead>
                                     <tbody>
@@ -132,6 +134,7 @@ function EmployeeManager(props) {
                                                 <td className="dtr-control sorting_1" tabindex="0">{item.phone}</td>
                                                 <td className="dtr-control sorting_1" tabindex="0">{item.email}</td>
                                                 <td className="dtr-control sorting_1" tabindex="0">{item.store?.name}</td>
+                                                <td className="dtr-control sorting_1" tabindex="0">{item.roles[0].name === "ROLE_USER" ? "Nhân viên" : "Khách hàng" }</td>
                                                 <td>
                                                     <button type="button" class="btn btn-outline-success" onClick={() => handleLockedAccount(item.id)}>
                                                         {item.isLocked === true ? "Mở" : "Khóa"}
