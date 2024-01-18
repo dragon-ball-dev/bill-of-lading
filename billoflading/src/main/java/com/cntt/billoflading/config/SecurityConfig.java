@@ -132,10 +132,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/auth/**", "/oauth2/**", "/export-bill/**", "/customer/room/**",
                         "/account/send-mail/contact",
                         "/account/customer/**","/room/{userId}/rentaler/**","/account/{id}/**",
-                        "/request/customer",
+                        "/news/**",
                         "/view-file/**",
+                        "/banner/**",
                         "/document/**",
-                        "/image/**","/product/get-img")
+                        "/image/**","/account/**")
                 .permitAll()
                 .anyRequest()
                 .authenticated()

@@ -36,7 +36,7 @@ public class OrderController extends BaseController {
                     schema = @Schema(implementation = ExtendedMessage.class))})
     private ResponseEntity<?> getAllOrderByUserAndStatus(
             @RequestParam Long userid,
-            @RequestParam OrderStatus orderStatus,
+            @RequestParam(required = false) OrderStatus orderStatus,
             @RequestParam Integer pageNo,
             @RequestParam Integer pageSize
     ){
