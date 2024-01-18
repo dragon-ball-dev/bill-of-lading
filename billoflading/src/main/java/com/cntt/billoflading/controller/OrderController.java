@@ -4,6 +4,7 @@ import com.cntt.billoflading.config.Constant;
 import com.cntt.billoflading.controller.base.BaseController;
 import com.cntt.billoflading.controller.base.message.ExtendedMessage;
 import com.cntt.billoflading.domain.dto.OrderDTO;
+import com.cntt.billoflading.domain.enums.OrderStatus;
 import com.cntt.billoflading.services.OrderService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -21,6 +22,26 @@ import org.springframework.web.bind.annotation.*;
 public class OrderController extends BaseController {
 
     private final OrderService orderService;
+
+    @GetMapping("/user")
+    @Operation(summary = "get paging of order")
+    @ApiResponse(responseCode = Constant.API_RESPONSE.API_STATUS_OK_STR, description = "get detail order successful",
+            content = {@Content(mediaType = "application/json",
+                    schema = @Schema(implementation = ExtendedMessage.class))})
+    @ApiResponse(responseCode = Constant.API_RESPONSE.API_STATUS_BAD_REQUEST_STR, description = "Input invalid",
+            content = {@Content(mediaType = "application/json",
+                    schema = @Schema(implementation = ExtendedMessage.class))})
+    @ApiResponse(responseCode = Constant.API_RESPONSE.API_STATUS_INTERNAL_SERVER_ERROR_STR, description = "Internal Server Error",
+            content = {@Content(mediaType = "application/json",
+                    schema = @Schema(implementation = ExtendedMessage.class))})
+    private ResponseEntity<?> getAllPostByUserAndStatus(
+            @RequestParam Long userid,
+            @RequestParam OrderStatus orderStatus,
+            @RequestParam Integer pageNo,
+            @RequestParam Integer pageSize
+    ){
+        return createSuccessResponse("get detail order",orderService.getPagingOrderByStatusAndUser(userid,orderStatus,pageNo,pageSize));
+    }
 
     @GetMapping("/{id}")
     @Operation(summary = "get paging of order")
