@@ -129,6 +129,14 @@ public class OrderServiceImp extends BaseService implements OrderService {
     }
 
     @Override
+    public Page<OrderDTO> getPagingOrder(Integer pageNo, Integer pageSize) {
+        int page = pageNo == 0 ? pageNo : pageNo - 1;
+        Pageable pageable = PageRequest.of(page, pageSize);
+        Page<Order> orderPage = orderRepository.findAll(pageable);
+        return mapper.convertToResponsePage(orderPage, OrderDTO.class, pageable);
+    }
+
+    @Override
     public Page<OrderDTO> getPagingOrderByStock(long stockId, Integer pageNo, Integer pageSize) {
         Stock stock = stockRepository.findById(stockId)
                 .orElseThrow(() -> new IllegalArgumentException("Stock is not exist!"));

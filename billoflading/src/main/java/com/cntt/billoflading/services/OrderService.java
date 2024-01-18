@@ -13,7 +13,9 @@ public interface OrderService {
     MessageResponse UpdateStatusOrder(Long id, OrderStatus orderStatus);
     OrderDTO GetOrderById(Long id);
     Page<OrderDTO> getPagingOrderByStatusAndUser(long userId, OrderStatus orderStatus, Integer pageNo, Integer pageSize);
+    Page<OrderDTO> getPagingOrder( Integer pageNo, Integer pageSize);
     Page<OrderDTO> getPagingOrderByStock(long stockId, Integer pageNo, Integer pageSize);
     Page<OrderDTO> getPagingOrderByServiceAndUser(long userId, int ServiceId, Integer pageNo, Integer pageSize);
+
 
 }

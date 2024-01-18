@@ -34,7 +34,7 @@ public class OrderController extends BaseController {
     @ApiResponse(responseCode = Constant.API_RESPONSE.API_STATUS_INTERNAL_SERVER_ERROR_STR, description = "Internal Server Error",
             content = {@Content(mediaType = "application/json",
                     schema = @Schema(implementation = ExtendedMessage.class))})
-    private ResponseEntity<?> getAllPostByUserAndStatus(
+    private ResponseEntity<?> getAllOrderByUserAndStatus(
             @RequestParam Long userid,
             @RequestParam OrderStatus orderStatus,
             @RequestParam Integer pageNo,
@@ -54,8 +54,24 @@ public class OrderController extends BaseController {
     @ApiResponse(responseCode = Constant.API_RESPONSE.API_STATUS_INTERNAL_SERVER_ERROR_STR, description = "Internal Server Error",
             content = {@Content(mediaType = "application/json",
                     schema = @Schema(implementation = ExtendedMessage.class))})
-    private ResponseEntity<?> getAllPost(@PathVariable Long id){
+    private ResponseEntity<?> getOrderById(@PathVariable Long id){
         return createSuccessResponse("get detail order",orderService.GetOrderById(id));
+    }
+
+    @GetMapping
+    @Operation(summary = "get paging of order")
+    @ApiResponse(responseCode = Constant.API_RESPONSE.API_STATUS_OK_STR, description = "get detail order successful",
+            content = {@Content(mediaType = "application/json",
+                    schema = @Schema(implementation = ExtendedMessage.class))})
+    @ApiResponse(responseCode = Constant.API_RESPONSE.API_STATUS_BAD_REQUEST_STR, description = "Input invalid",
+            content = {@Content(mediaType = "application/json",
+                    schema = @Schema(implementation = ExtendedMessage.class))})
+    @ApiResponse(responseCode = Constant.API_RESPONSE.API_STATUS_INTERNAL_SERVER_ERROR_STR, description = "Internal Server Error",
+            content = {@Content(mediaType = "application/json",
+                    schema = @Schema(implementation = ExtendedMessage.class))})
+    private ResponseEntity<?> getAllOrder(@RequestParam Integer pageNo,
+                                                      @RequestParam Integer pageSize){
+        return createSuccessResponse("get detail order",orderService.getPagingOrder(pageNo,pageSize));
     }
 
     @PostMapping
