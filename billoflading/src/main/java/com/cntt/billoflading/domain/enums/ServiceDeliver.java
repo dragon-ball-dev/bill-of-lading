@@ -1,11 +1,11 @@
 package com.cntt.billoflading.domain.enums;
 
 public enum ServiceDeliver {
-    SHIPPING_ECONOMICAL(0),// giao hang tiet kiem
-    SHIPPING_FAST(1), // Giao hang nhanh
-    SHIPPING_EXPRESS(2), // giao hang hoa toc
-    SHIPPING_INTERNAL(3),// giao hang trong nuoc
-    SHIPPING_EXTERNAL(4); // giao hang quoc te
+    SHIPPING_ECONOMICAL(0),// Giao hàng tiết kiệm
+    SHIPPING_FAST(1), // Giao hàng nhanh
+    SHIPPING_EXPRESS(2), // Giao hàng hỏa tốc
+    SHIPPING_INTERNAL(3),// Giao hàng trong nước
+    SHIPPING_EXTERNAL(4); // Giao hàng quốc tế
 
 
     private int value;

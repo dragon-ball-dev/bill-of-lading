@@ -147,6 +147,18 @@ export function addProvince(category) {
     });
 }
 
+export function addServices(category) {
+    if(!localStorage.getItem(ACCESS_TOKEN)) {
+        return Promise.reject("No access token set.");
+    }
+
+    return request({
+        url: API_BASE_URL + "/service_transportation",
+        method: 'POST',
+        body: JSON.stringify(category)
+    });
+}
+
 export function addBanner(banner) {
     if(!localStorage.getItem(ACCESS_TOKEN)) {
         return Promise.reject("No access token set.");
@@ -549,6 +561,17 @@ export function getAllProduct(pageNo, pageSize, name) {
 
     return request({
         url: API_BASE_URL + "/product/all?page="+pageNo+"&pageSize="+pageSize+"&name="+name,
+        method: 'GET'
+    });
+}
+
+export function getAllService(pageNo, pageSize) {
+    if(!localStorage.getItem(ACCESS_TOKEN)) {
+        return Promise.reject("No access token set.");
+    }
+
+    return request({
+        url: API_BASE_URL + "/service_transportation?pageNo="+pageNo+"&pageSize="+pageSize,
         method: 'GET'
     });
 }

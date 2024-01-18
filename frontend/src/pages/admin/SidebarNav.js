@@ -29,7 +29,7 @@ const SidebarNav = ({ role }) => {
           </NavLink>
         </li>
         <li className="sidebar-item">
-          <NavLink to="/product" className="sidebar-link">
+          <NavLink to="/services" className="sidebar-link">
             <i className="align-middle" data-feather="sliders"></i> <span className="align-middle">Quản lý dịch vụ</span>
           </NavLink>
         </li>
