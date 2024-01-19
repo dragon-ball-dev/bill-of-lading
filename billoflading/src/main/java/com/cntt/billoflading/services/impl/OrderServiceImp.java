@@ -15,6 +15,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.HashSet;
+import java.util.Set;
 
 @Service
 @RequiredArgsConstructor
@@ -24,6 +26,7 @@ public class OrderServiceImp extends BaseService implements OrderService {
     private final OrderRepository orderRepository;
     private final ServiceTransportationRepository serviceTransportationRepository;
     private final StockRepository stockRepository;
+    private final HistoryCheckInRepository historyCheckInRepository;
     private final ProvinceRepository provinceRepository;
     private final CommonMapper mapper;
     private final ServiceTransportationServiceImp serviceTransportationServiceImp;
@@ -103,12 +106,32 @@ public class OrderServiceImp extends BaseService implements OrderService {
     }
 
     @Override
-    public MessageResponse UpdateStatusOrder(Long id, OrderStatus orderStatus) {
+    public MessageResponse UpdateStatusOrder(Long id, OrderStatus orderStatus, Long stockId) {
         Order order = orderRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Order is not exist!"));
+        Stock stock = stockRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("stock is not exist!"));
         order.setStatus(orderStatus);
+        Set<Stock> stockOfOrder = order.getStock();
+        if (orderStatus.equals(OrderStatus.STATUS_IMPORT_STOCK)){
+            stockOfOrder.add(stock);
+            CreateHistoryCheckIn(order,orderStatus,stock);
+        } else if (orderStatus.equals(OrderStatus.STATUS_EXPORT_STOCK)) {
+            stockOfOrder.remove(stock);
+            CreateHistoryCheckIn(order,orderStatus,stock);
+        }else {
+            order.setStatus(orderStatus);
+        }
         orderRepository.save(order);
-        return MessageResponse.builder().message("Update Order Success").build();
+        return  MessageResponse.builder().message("Update Order Status Success").build();
+    }
+
+    public void CreateHistoryCheckIn(Order order,OrderStatus orderStatus, Stock stock){
+        HistoryCheckIn historyCheckIn = new HistoryCheckIn();
+        historyCheckIn.setOrder(order);
+        historyCheckIn.setStatus(orderStatus);
+        historyCheckIn.setStock(stock);
+        historyCheckInRepository.save(historyCheckIn);
     }
 
     @Override

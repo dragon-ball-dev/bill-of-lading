@@ -109,6 +109,25 @@ public class OrderController extends BaseController {
         return createSuccessResponse("update order", orderService.UpdateOrder(id,orderDTO));
     }
 
+    @PutMapping("/status")
+    @Operation(summary = "update status of order")
+    @ApiResponse(responseCode = Constant.API_RESPONSE.API_STATUS_OK_STR, description = "update a order successful",
+            content = {@Content(mediaType = "application/json",
+                    schema = @Schema(implementation = ExtendedMessage.class))})
+    @ApiResponse(responseCode = Constant.API_RESPONSE.API_STATUS_BAD_REQUEST_STR, description = "Input invalid",
+            content = {@Content(mediaType = "application/json",
+                    schema = @Schema(implementation = ExtendedMessage.class))})
+    @ApiResponse(responseCode = Constant.API_RESPONSE.API_STATUS_INTERNAL_SERVER_ERROR_STR, description = "Internal Server Error",
+            content = {@Content(mediaType = "application/json",
+                    schema = @Schema(implementation = ExtendedMessage.class))})
+    private ResponseEntity<?> updateOrder(
+            @RequestBody Long order_id,
+            @RequestBody Long stock_id,
+            @RequestBody OrderStatus status
+    ){
+        return createSuccessResponse("update order", orderService.UpdateStatusOrder(order_id,status, stock_id));
+    }
+
     @PutMapping("/cancel/{id}")
     @Operation(summary = "cancel order")
     @ApiResponse(responseCode = Constant.API_RESPONSE.API_STATUS_OK_STR, description = "cancel a order successful",
