@@ -4,6 +4,7 @@ import com.cntt.billoflading.domain.dto.OrderDTO;
 import com.cntt.billoflading.domain.enums.OrderStatus;
 import com.cntt.billoflading.domain.models.Order;
 import com.cntt.billoflading.domain.models.Stock;
+import com.cntt.billoflading.domain.payload.request.UpdateStatusOrder;
 import com.cntt.billoflading.domain.payload.response.MessageResponse;
 import org.springframework.data.domain.Page;
 
@@ -11,7 +12,7 @@ public interface OrderService {
     MessageResponse CreateOrder(OrderDTO orderDTO);
     MessageResponse UpdateOrder(Long id, OrderDTO orderDTO);
     MessageResponse CancelOrder(Long id);
-    MessageResponse UpdateStatusOrder(Long id, OrderStatus orderStatus, Long stockId);
+    MessageResponse UpdateStatusOrder(UpdateStatusOrder updateStatusOrder);
     OrderDTO GetOrderById(Long id);
     Page<OrderDTO> getPagingOrderByStatusAndUser(long userId, OrderStatus orderStatus, Integer pageNo, Integer pageSize);
     Page<OrderDTO> getPagingOrder( Integer pageNo, Integer pageSize);

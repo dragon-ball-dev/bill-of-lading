@@ -3,6 +3,7 @@ package com.cntt.billoflading.services.impl;
 import com.cntt.billoflading.domain.dto.OrderDTO;
 import com.cntt.billoflading.domain.enums.OrderStatus;
 import com.cntt.billoflading.domain.models.*;
+import com.cntt.billoflading.domain.payload.request.UpdateStatusOrder;
 import com.cntt.billoflading.domain.payload.response.MessageResponse;
 import com.cntt.billoflading.mapper.CommonMapper;
 import com.cntt.billoflading.repository.*;
@@ -106,21 +107,21 @@ public class OrderServiceImp extends BaseService implements OrderService {
     }
 
     @Override
-    public MessageResponse UpdateStatusOrder(Long id, OrderStatus orderStatus, Long stockId) {
-        Order order = orderRepository.findById(id)
+    public MessageResponse UpdateStatusOrder(UpdateStatusOrder updateStatusOrder) {
+        Order order = orderRepository.findById(updateStatusOrder.getOrder_id())
                 .orElseThrow(() -> new IllegalArgumentException("Order is not exist!"));
-        Stock stock = stockRepository.findById(id)
+        Stock stock = stockRepository.findById(updateStatusOrder.getStock_id())
                 .orElseThrow(() -> new IllegalArgumentException("stock is not exist!"));
-        order.setStatus(orderStatus);
+        order.setStatus(updateStatusOrder.getStatus());
         Set<Stock> stockOfOrder = order.getStock();
-        if (orderStatus.equals(OrderStatus.STATUS_IMPORT_STOCK)){
+        if (updateStatusOrder.getStatus().equals(OrderStatus.STATUS_IMPORT_STOCK)){
             stockOfOrder.add(stock);
-            CreateHistoryCheckIn(order,orderStatus,stock);
-        } else if (orderStatus.equals(OrderStatus.STATUS_EXPORT_STOCK)) {
+            CreateHistoryCheckIn(order,updateStatusOrder.getStatus(),stock);
+        } else if (updateStatusOrder.getStatus().equals(OrderStatus.STATUS_EXPORT_STOCK)) {
             stockOfOrder.remove(stock);
-            CreateHistoryCheckIn(order,orderStatus,stock);
+            CreateHistoryCheckIn(order,updateStatusOrder.getStatus(),stock);
         }else {
-            order.setStatus(orderStatus);
+            order.setStatus(updateStatusOrder.getStatus());
         }
         orderRepository.save(order);
         return  MessageResponse.builder().message("Update Order Status Success").build();
