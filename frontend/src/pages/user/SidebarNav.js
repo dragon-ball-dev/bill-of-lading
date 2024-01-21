@@ -13,18 +13,8 @@ const SidebarNav = () => {
         </NavLink>
       </li>
       <li className="sidebar-item">
-        <NavLink to="/room-hired" className="sidebar-link">
+        <NavLink to="/history" className="sidebar-link">
           <i className="align-middle" data-feather="sliders"></i> <span className="align-middle">Lịch sử tạo vận đơn</span>
-        </NavLink>
-      </li>
-      <li className="sidebar-item">
-        <NavLink to="/request-status" className="sidebar-link">
-          <i className="align-middle" data-feather="sliders"></i> <span className="align-middle">Trạng thái yêu cầu</span>
-        </NavLink>
-      </li>
-      <li className="sidebar-item">
-        <NavLink to="/follow-agents" className="sidebar-link">
-          <i className="align-middle" data-feather="sliders"></i> <span className="align-middle">Người tư vấn theo dõi</span>
         </NavLink>
       </li>
       <li className="sidebar-item">

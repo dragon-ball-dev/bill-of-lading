@@ -3,8 +3,6 @@ package com.cntt.billoflading.domain.enums;
 public enum OrderStatus {
     STATUS_PENDING("STATUS_PENDING"), // dang xu ly
     STATUS_TO_SHIP("STATUS_TO_SHIP"), // dang van chuyen
-    STATUS_EXPORT_STOCK("STATUS_EXPORT_STOCK"), // xuat kho
-    STATUS_IMPORT_STOCK("STATUS_IMPORT_STOCK"), // nhap kho
     STATUS_TO_RECEIVER("STATUS_TO_RECEIVER"), // dang giao hang
     STATUS_COMPLETED("STATUS_COMPLETED"), // hoan thanh
     STATUS_CANCELLED("STATUS_CANCELLED"),// huy

@@ -147,6 +147,18 @@ export function addProvince(category) {
     });
 }
 
+export function addOrderBillOfLading(order) {
+    if(!localStorage.getItem(ACCESS_TOKEN)) {
+        return Promise.reject("No access token set.");
+    }
+
+    return request({
+        url: API_BASE_URL + "/order",
+        method: 'POST',
+        body: JSON.stringify(order)
+    });
+}
+
 export function addServices(category) {
     if(!localStorage.getItem(ACCESS_TOKEN)) {
         return Promise.reject("No access token set.");
@@ -561,6 +573,28 @@ export function getAllProduct(pageNo, pageSize, name) {
 
     return request({
         url: API_BASE_URL + "/product/all?page="+pageNo+"&pageSize="+pageSize+"&name="+name,
+        method: 'GET'
+    });
+}
+
+export function getAllOrderNew(pageNo, pageSize, name) {
+    if(!localStorage.getItem(ACCESS_TOKEN)) {
+        return Promise.reject("No access token set.");
+    }
+
+    return request({
+        url: API_BASE_URL + "/order?pageNo="+pageNo+"&pageSize="+pageSize,
+        method: 'GET'
+    });
+}
+
+export function getAllOrderHistory(pageNo, pageSize, userId) {
+    if(!localStorage.getItem(ACCESS_TOKEN)) {
+        return Promise.reject("No access token set.");
+    }
+
+    return request({
+        url: API_BASE_URL + "/order?pageNo="+pageNo+"&pageSize="+pageSize+"&userId="+userId,
         method: 'GET'
     });
 }
