@@ -88,7 +88,7 @@ const AddBanner = (props) => {
                                     <input
                                         type="text"
                                         className="form-control"
-                                        placeholder="Tên thể loại"
+                                        placeholder="Tên banner"
                                         name="name"
                                         value={name}
                                         onChange={handleInputChange}

@@ -33,9 +33,10 @@ class About extends Component {
                                         <h2>
                                             <span
                                                 style={{
-                      backgroundColor: "hsl(0, 0%, 100%)",
-                      color: "hsl(210, 75%, 60%)"}}
-                    
+                                                    backgroundColor: "hsl(0, 0%, 100%)",
+                                                    color: "hsl(210, 75%, 60%)"
+                                                }}
+
                                             ><strong>A. Tổng quan về công ty</strong></span
                                             >
                                         </h2>
@@ -62,7 +63,7 @@ class About extends Component {
                                         </p>
                                         <p>&nbsp;</p>
                                         <h2>
-                                            <span style={{color: "hsl(210, 75%, 60%)"}}
+                                            <span style={{ color: "hsl(210, 75%, 60%)" }}
                                             ><strong>&nbsp;B. Hồ sơ công ty</strong></span
                                             >
                                         </h2>
@@ -84,7 +85,7 @@ class About extends Component {
                                         </p>
                                         <p>
                                             Website:&nbsp; &nbsp;<a href="http://skytrans.vn"
-                                            ><span style={{color: "hsl(210, 75%, 60%)"}}
+                                            ><span style={{ color: "hsl(210, 75%, 60%)" }}
                                             >http://tvlpost.com</span
                                                 ></a
                                             >
@@ -132,7 +133,7 @@ class About extends Component {
 
                                         <div class="d-grid gap-2 mt-3">
                                             <a
-                                                href="http://tvlpost.com/dashboard/createOrder/domestic"
+                                                href="/add-order-user"
                                                 class="btn ppx-bg-vibrant-blue ppx-text-white"
                                                 type="button"
                                             >Tạo vận đơn</a

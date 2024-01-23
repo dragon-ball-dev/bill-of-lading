@@ -64,6 +64,12 @@ import DistrictManager from './pages/admin/DistrictManager';
 import AddDistrict from './pages/admin/AddDistrict';
 import ServicesManager from './pages/admin/ServicesManager';
 import AddServices from './pages/admin/AddServices';
+import OrderManagement from './pages/admin/OrderManager';
+import AddOrder from './pages/admin/AddOrder';
+import AddOrderUser from './pages/user/AddOrder';
+import OrderHistory from './pages/user/OrderHistory';
+import EditBanner from './pages/admin/EditBanner';
+import EditServices from './pages/admin/EditServices';
 
 
 function App() {
@@ -150,6 +156,7 @@ function App() {
           {/* USER */}
           <Route exact path="/" element={<Main authenticated={authenticated} currentUser={currentUser} onLogout={handleLogout} />} />
           <Route exact path="/about" element={<About authenticated={authenticated} currentUser={currentUser} onLogout={handleLogout} />} />
+          <Route exact path="/history" element={<OrderHistory authenticated={authenticated} currentUser={currentUser} onLogout={handleLogout} />} />
           <Route exact path="/agents" element={<Agents authenticated={authenticated} currentUser={currentUser} onLogout={handleLogout} />} />
           <Route exact path="/new-feeds" element={<News authenticated={authenticated} currentUser={currentUser} onLogout={handleLogout} />} />
           <Route exact path="/news-single/:id" element={<NewsDetails authenticated={authenticated} currentUser={currentUser} onLogout={handleLogout} />} />
@@ -181,7 +188,7 @@ function App() {
           <Route exact path="/sell-product" element={<SellProduct authenticated={authenticated} currentUser={currentUser} role={role} onLogout={handleLogout} />} />
           <Route exact path="/cart" element={<Cart authenticated={authenticated} currentUser={currentUser} role={role} onLogout={handleLogout} />} />
           <Route exact path="/report" element={<Report authenticated={authenticated} currentUser={currentUser} role={role} onLogout={handleLogout} />} />
-          <Route exact path="/order" element={<OrderManager authenticated={authenticated} currentUser={currentUser} role={role} onLogout={handleLogout} />} />
+          <Route exact path="/order" element={<OrderManagement authenticated={authenticated} currentUser={currentUser} role={role} onLogout={handleLogout} />} />
           <Route exact path="/invoice" element={<Invoice authenticated={authenticated} currentUser={currentUser} role={role} onLogout={handleLogout} />} />
           <Route exact path="/move-stock" element={<MoveStock authenticated={authenticated} currentUser={currentUser} onLogout={handleLogout} role={role} />} />
           <Route exact path="/profile-admin" element={<Profile authenticated={authenticated} currentUser={currentUser} onLogout={handleLogout} role={role} />} />
@@ -190,6 +197,8 @@ function App() {
           <Route exact path="/province" element={<ProvinceManager authenticated={authenticated} currentUser={currentUser} onLogout={handleLogout} role={role} />} />
           <Route exact path="/district" element={<DistrictManager authenticated={authenticated} currentUser={currentUser} onLogout={handleLogout} role={role} />} />
 
+          <Route exact path="/add-order-user" element={<AddOrderUser authenticated={authenticated} role={role} currentUser={currentUser} onLogout={handleLogout} />} />
+          <Route exact path="/add-order" element={<AddOrder authenticated={authenticated} role={role} currentUser={currentUser} onLogout={handleLogout} />} />
           <Route exact path="/add-services" element={<AddServices authenticated={authenticated} role={role} currentUser={currentUser} onLogout={handleLogout} />} />
           <Route exact path="/add-store" element={<AddStore authenticated={authenticated} role={role} currentUser={currentUser} onLogout={handleLogout} />} />
           <Route exact path="/add-customer" element={<AddCustomer authenticated={authenticated} role={role} currentUser={currentUser} onLogout={handleLogout} />} />
@@ -204,6 +213,8 @@ function App() {
           <Route exact path="/add-province" element={<AddProvince authenticated={authenticated} role={role} currentUser={currentUser} onLogout={handleLogout} />} />
           <Route exact path="/add-district" element={<AddDistrict authenticated={authenticated} role={role} currentUser={currentUser} onLogout={handleLogout} />} />
 
+          <Route exact path="/edit-services/:id" element={<EditServices authenticated={authenticated} role={role} currentUser={currentUser} onLogout={handleLogout} />} />
+          <Route exact path="/edit-banner/:id" element={<EditBanner authenticated={authenticated} role={role} currentUser={currentUser} onLogout={handleLogout} />} />
           <Route exact path="/edit-stock/:id" element={<EditStock authenticated={authenticated} role={role} currentUser={currentUser} onLogout={handleLogout} />} />
           <Route exact path="/edit-customer/:id" element={<EditCustomer authenticated={authenticated} role={role} currentUser={currentUser} onLogout={handleLogout} />} />
           <Route exact path="/edit-store/:id" element={<EditStore authenticated={authenticated} role={role} currentUser={currentUser} onLogout={handleLogout} />} />

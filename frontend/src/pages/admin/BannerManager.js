@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Navigate, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
-import { deleteCategory, getAllBanner, getAllCategory } from "../../services/fetch/ApiUtils";
+import { deleteBanner, deleteCategory, getAllBanner, getAllCategory } from "../../services/fetch/ApiUtils";
 import SidebarNav from "./SidebarNav";
 import Nav from "./Nav";
 import Pagination from "./Pagnation";
@@ -52,7 +52,7 @@ function BannerManager(props){
     };
 
     const handleDeleteCategory = (id) => {
-        deleteCategory(id).then(response => {
+        deleteBanner(id).then(response => {
             console.log(response.message)
             toast.success("Xóa banner thành công")
             fetchData();
