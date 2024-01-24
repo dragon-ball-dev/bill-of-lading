@@ -397,6 +397,30 @@ export function editServices(id, store) {
     });
 }
 
+export function editProvince(id, store) {
+    if(!localStorage.getItem(ACCESS_TOKEN)) {
+        return Promise.reject("No access token set.");
+    }
+
+    return request({
+        url: API_BASE_URL + "/province/"+id,
+        method: 'POST',
+        body: JSON.stringify(store)
+    });
+}
+
+export function editDistrict(id, store) {
+    if(!localStorage.getItem(ACCESS_TOKEN)) {
+        return Promise.reject("No access token set.");
+    }
+
+    return request({
+        url: API_BASE_URL + "/district/"+id,
+        method: 'POST',
+        body: JSON.stringify(store)
+    });
+}
+
 export function editStock(id, store) {
     if(!localStorage.getItem(ACCESS_TOKEN)) {
         return Promise.reject("No access token set.");
@@ -524,6 +548,29 @@ export function getStockById(id) {
     });
 }
 
+
+export function getProvinceById(id) {
+    if(!localStorage.getItem(ACCESS_TOKEN)) {
+        return Promise.reject("No access token set.");
+    }
+
+    return request({
+        url: API_BASE_URL + "/province/"+id,
+        method: 'GET'
+    });
+}
+
+export function getDistrictById(id) {
+    if(!localStorage.getItem(ACCESS_TOKEN)) {
+        return Promise.reject("No access token set.");
+    }
+
+    return request({
+        url: API_BASE_URL + "/district/"+id,
+        method: 'GET'
+    });
+}
+
 export function getServicesById(id) {
     if(!localStorage.getItem(ACCESS_TOKEN)) {
         return Promise.reject("No access token set.");
@@ -545,6 +592,29 @@ export function deleteCategory(id) {
         method: 'DELETE'
     });
 }
+
+export function deleteProvince(id) {
+    if(!localStorage.getItem(ACCESS_TOKEN)) {
+        return Promise.reject("No access token set.");
+    }
+
+    return request({
+        url: API_BASE_URL + "/province/"+id,
+        method: 'DELETE'
+    });
+}
+
+export function deleteDistrict(id) {
+    if(!localStorage.getItem(ACCESS_TOKEN)) {
+        return Promise.reject("No access token set.");
+    }
+
+    return request({
+        url: API_BASE_URL + "/district/"+id,
+        method: 'DELETE'
+    });
+}
+
 
 export function deleteBanner(id) {
     if(!localStorage.getItem(ACCESS_TOKEN)) {

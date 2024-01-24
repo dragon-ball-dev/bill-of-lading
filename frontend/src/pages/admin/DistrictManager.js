@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Navigate, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
-import { deleteStock, getAllCategory, getAllDistrict, getAllProduct, getAllStock } from "../../services/fetch/ApiUtils";
+import { deleteDistrict, deleteStock, getAllCategory, getAllDistrict, getAllProduct, getAllStock } from "../../services/fetch/ApiUtils";
 import SidebarNav from "./SidebarNav";
 import Nav from "./Nav";
 import Pagination from "./Pagnation";
@@ -53,9 +53,9 @@ function DistrictManager(props){
     };
 
     const handleDeleteCategory = (id) => {
-        deleteStock(id).then(response => {
+        deleteDistrict(id).then(response => {
             console.log(response.message)
-            toast.success("Xóa số lượng sản phẩm trong huyện thành công")
+            toast.success("Xóa huyện thành công")
             fetchData();
         }).catch(
             error => {
