@@ -159,6 +159,30 @@ export function addOrderBillOfLading(order) {
     });
 }
 
+export function editOrderBillOfLading(id,order) {
+    if(!localStorage.getItem(ACCESS_TOKEN)) {
+        return Promise.reject("No access token set.");
+    }
+
+    return request({
+        url: API_BASE_URL + "/order/"+id,
+        method: 'PUT',
+        body: JSON.stringify(order)
+    });
+}
+
+export function updateStatusOrderBillOfLading(order) {
+    if(!localStorage.getItem(ACCESS_TOKEN)) {
+        return Promise.reject("No access token set.");
+    }
+
+    return request({
+        url: API_BASE_URL + "/order/checkin",
+        method: 'PUT',
+        body: JSON.stringify(order)
+    });
+}
+
 export function addServices(category) {
     if(!localStorage.getItem(ACCESS_TOKEN)) {
         return Promise.reject("No access token set.");
@@ -488,6 +512,18 @@ export function getPriceMonth() {
         method: 'GET'
     });
 }
+
+export function getOrderById(id) {
+    if(!localStorage.getItem(ACCESS_TOKEN)) {
+        return Promise.reject("No access token set.");
+    }
+
+    return request({
+        url: API_BASE_URL + "/order/"+id,
+        method: 'GET'
+    });
+}
+
 
 export function getStockById(id) {
     if(!localStorage.getItem(ACCESS_TOKEN)) {

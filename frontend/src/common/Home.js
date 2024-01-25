@@ -32,6 +32,19 @@ function Home() {
         )
     }
 
+    const handleOnClick = () => {
+        alert("Không tìm thấy vận đơn bạn tìm")
+    }
+
+    const handleOnSearch = () => {
+  
+            const randomNumber = Math.floor(Math.random() * 90000) + 10000;
+            console.log(randomNumber);
+            // Do something with the random number
+            alert("Phí dịch vụ : " + randomNumber + " VNĐ")
+        
+    }
+
     return (
         <>
             <div class="mainContent">
@@ -39,7 +52,7 @@ function Home() {
                     {tableData?.map((item) => {
                         if (item.status === true) {
                             return (
-                                <div class="mainBg ppx-py-24 ppx-h-screen/1.85 ppx-filter" style={{ backgroundImage: "url("+item.imageUrl+")" }}>
+                                <div class="mainBg ppx-py-24 ppx-h-screen/1.85 ppx-filter" style={{ backgroundImage: "url(" + item.imageUrl + ")" }}>
                                     <div class="container">
                                         <p class="ppx-uppercase md:ppx-text-5xl ppx-text-4xl ppx-font-semibold ppx-tracking-wide ppx-mb-0 text-center ppx-text-white">
                                             DỊCH VỤ CỦA CHÚNG TÔI - LỢI ÍCH CỦA CÁC BẠN
@@ -69,6 +82,7 @@ function Home() {
                                         data-bs-target="#trackingTabContainer"
                                         data-bs-toggle="pill"
                                         role="tab"
+
                                     >
                                         <span class="d-none d-sm-block"
                                         ><i class="fas fa-box me-1"></i> Tra cứu đơn vận</span
@@ -119,6 +133,7 @@ function Home() {
                                                 type="button"
                                                 class="btn btn-primary"
                                                 id="trackingBtn"
+                                                onClick={handleOnClick}
                                             >
                                                 <i class="fas fa-search mr-3"></i>
                                                 Tra Cứu
@@ -238,6 +253,27 @@ function Home() {
                                                         required
                                                     >
                                                         <option value="" selected>Chọn quận huyện</option>
+                                                        <optgroup label="An Giang">
+                                                            <option value="11863">Châu Phú</option>
+                                                            <option value="11864">Châu Thành</option>
+                                                            <option value="11865">Chợ Mới</option>
+                                                            <option value="11866">Phú Tân</option>
+
+                                                        </optgroup>
+                                                        <optgroup label="Bà Rịa Vũng Tàu">
+                                                            <option value="11867">Bà Rịa</option>
+                                                            <option value="11868">Châu Đức</option>
+                                                            <option value="11869">Côn Đảo</option>
+                                                            <option value="11870">Đất Đỏ</option>
+
+                                                        </optgroup>
+                                                        <optgroup label="Hà Nội">
+                                                            <option value="11806">Ba Đình</option>
+                                                            <option value="11807">Hoàn Kiếm</option>
+                                                            <option value="11808">Hai Bà Trưng</option>
+                                                            <option value="11809">Đống Đa</option>
+
+                                                        </optgroup>
                                                     </select>
                                                 </div>
 
@@ -256,6 +292,22 @@ function Home() {
                                                         required
                                                     >
                                                         <option value="" selected>Chọn phường xã</option>
+                                                        <optgroup label="Phường xã của Quận 1 - Hồ Chí Minh">
+                                                            <option value="12345">Bến Nghé</option>
+                                                            <option value="12346">Cầu Kho</option>
+                                                            <option value="12347">Cầu Ông Lãnh</option>
+                                                            <option value="12348">Cô Giang</option>
+
+                                                        </optgroup>
+                                                        <optgroup label="Phường xã của Quận Hoàn Kiếm - Hà Nội">
+                                                            <option value="12349">Cửa Đông</option>
+                                                            <option value="12350">Cửa Nam</option>
+                                                            <option value="12351">Đồng Xuân</option>
+                                                            <option value="12352">Hàng Bạc</option>
+
+                                                        </optgroup>
+
+
                                                     </select>
                                                 </div>
                                             </div>
@@ -357,7 +409,29 @@ function Home() {
                                                         aria-label="Chọn quận huyện"
                                                         required
                                                     >
-                                                        <option value="" selected>Chọn quận huyện</option>
+                                                            <option value="" selected>Chọn quận huyện</option>
+                                                            <optgroup label="An Giang">
+                                                                <option value="11863">Châu Phú</option>
+                                                                <option value="11864">Châu Thành</option>
+                                                                <option value="11865">Chợ Mới</option>
+                                                                <option value="11866">Phú Tân</option>
+
+                                                            </optgroup>
+                                                            <optgroup label="Bà Rịa Vũng Tàu">
+                                                                <option value="11867">Bà Rịa</option>
+                                                                <option value="11868">Châu Đức</option>
+                                                                <option value="11869">Côn Đảo</option>
+                                                                <option value="11870">Đất Đỏ</option>
+
+                                                            </optgroup>
+                                                            <optgroup label="Hà Nội">
+                                                                <option value="11806">Ba Đình</option>
+                                                                <option value="11807">Hoàn Kiếm</option>
+                                                                <option value="11808">Hai Bà Trưng</option>
+                                                                <option value="11809">Đống Đa</option>
+
+                                                            </optgroup>
+
                                                     </select>
                                                 </div>
 
@@ -376,6 +450,20 @@ function Home() {
                                                         required
                                                     >
                                                         <option value="" selected>Chọn phường xã</option>
+                                                        <optgroup label="Phường xã của Quận 1 - Hồ Chí Minh">
+                                                            <option value="12345">Bến Nghé</option>
+                                                            <option value="12346">Cầu Kho</option>
+                                                            <option value="12347">Cầu Ông Lãnh</option>
+                                                            <option value="12348">Cô Giang</option>
+
+                                                        </optgroup>
+                                                        <optgroup label="Phường xã của Quận Hoàn Kiếm - Hà Nội">
+                                                            <option value="12349">Cửa Đông</option>
+                                                            <option value="12350">Cửa Nam</option>
+                                                            <option value="12351">Đồng Xuân</option>
+                                                            <option value="12352">Hàng Bạc</option>
+
+                                                        </optgroup>
                                                     </select>
                                                 </div>
                                             </div>
@@ -457,7 +545,7 @@ function Home() {
                                             </div>
 
                                             <div class="orderBtn d-flex justify-content-center">
-                                                <button class="btn btn-primary ppx-px-20 ppx-rounded-md">
+                                                <button class="btn btn-primary ppx-px-20 ppx-rounded-md" onClick={handleOnSearch}>
                                                     Tra cứu giá
                                                 </button>
                                             </div>

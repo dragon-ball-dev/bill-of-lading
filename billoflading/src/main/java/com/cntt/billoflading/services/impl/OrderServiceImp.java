@@ -3,6 +3,7 @@ package com.cntt.billoflading.services.impl;
 import com.cntt.billoflading.domain.dto.OrderDTO;
 import com.cntt.billoflading.domain.enums.OrderStatus;
 import com.cntt.billoflading.domain.models.*;
+import com.cntt.billoflading.domain.payload.request.UpdateStatusOrder;
 import com.cntt.billoflading.domain.payload.response.MessageResponse;
 import com.cntt.billoflading.mapper.CommonMapper;
 import com.cntt.billoflading.repository.*;
@@ -15,6 +16,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.Set;
 
 @Service
 @RequiredArgsConstructor
@@ -78,7 +80,6 @@ public class OrderServiceImp extends BaseService implements OrderService {
     public MessageResponse UpdateOrder(Long id, OrderDTO orderDTO) {
         Order order = orderRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Order is not exist!"));
-
         order.setReceiver_info(orderDTO.getReceiver_info());
         order.setCod(orderDTO.getCod());
         order.setSender_info(orderDTO.getSender_info());
@@ -102,20 +103,38 @@ public class OrderServiceImp extends BaseService implements OrderService {
         return MessageResponse.builder().message("Cancel Order Success").build();
     }
 
+
     @Override
-    public MessageResponse UpdateStatusOrder(Long id, OrderStatus orderStatus) {
-        Order order = orderRepository.findById(id)
+    public MessageResponse UpdateStatusOrder(UpdateStatusOrder updateStatusOrder) {
+        Order order = orderRepository.findById(updateStatusOrder.getOrder_id())
                 .orElseThrow(() -> new IllegalArgumentException("Order is not exist!"));
-        order.setStatus(orderStatus);
+        Stock stock = stockRepository.findById(updateStatusOrder.getStock_id())
+                .orElseThrow(() -> new IllegalArgumentException("stock is not exist!"));
+        order.setStatus(updateStatusOrder.getStatus());
+        Set<Stock> stockOfOrder = order.getStock();
+//        if (updateStatusOrder.getStatus().equals(OrderStatus.STATUS_IMPORT_STOCK)){
+//            stockOfOrder.add(stock);
+//            CreateHistoryCheckIn(order,updateStatusOrder.getStatus(),stock);
+//        } else if (updateStatusOrder.getStatus().equals(OrderStatus.STATUS_EXPORT_STOCK)) {
+//            stockOfOrder.remove(stock);
+//            CreateHistoryCheckIn(order,updateStatusOrder.getStatus(),stock);
+//        }else {
+//            order.setStatus(updateStatusOrder.getStatus());
+//        }
         orderRepository.save(order);
-        return MessageResponse.builder().message("Update Order Success").build();
+        return  MessageResponse.builder().message("Update Order Status Success").build();
     }
 
     @Override
     public OrderDTO GetOrderById(Long id) {
         Order order = orderRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Order is not exist!"));
-        return mapper.convertToResponse(order,OrderDTO.class);
+        OrderDTO orderDTO = mapper.convertToResponse(order,OrderDTO.class);
+        orderDTO.setReceiver_Province_Id(order.getReceiver_province().getId());
+        orderDTO.setSender_Province_Id(order.getSender_province().getId());
+        orderDTO.setCategory_id(order.getCategory().getId());
+        orderDTO.setUser_id(order.getUser().getId());
+        return orderDTO;
     }
 
     @Override

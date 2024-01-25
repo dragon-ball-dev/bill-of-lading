@@ -1,36 +1,37 @@
 
 import React, { useEffect, useState } from 'react';
-import { Navigate } from 'react-router-dom';
+import { Navigate, useParams } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import SidebarNav from './SidebarNav';
-import { addOrder, addOrderBillOfLading, addProvince, getAllAccountOfAdmin, getAllCategory, getAllEmployees, getAllProvince } from '../../services/fetch/ApiUtils';
+import { addOrder, addOrderBillOfLading, addProvince, editOrderBillOfLading, getAllAccountOfAdmin, getAllCategory, getAllEmployees, getAllProvince, getOrderById } from '../../services/fetch/ApiUtils';
 import Nav from './Nav';
 import ProductService from '../../services/axios/ProductService';
 
-const AddOrder = (props) => {
+const EditOrder = (props) => {
+    const { id } = useParams();
     const [tableData, setTableData] = useState([]);
     const [tableData2, setTableData2] = useState([]);
     const [tableData3, setTableData3] = useState([]);
 
     const [productData, setProductData] = useState({
-        description: "Hàng dễ vỡ cẩn thận",
-        user_id: 2,
-        category_id: 1,
-        country: "VN",
-        receiver_info: "VN",
-        receiver_Province_Id: 2,
-        sender_Province_Id: 2,
-        sender_info: "VN",
-        status: "STATUS_PENDING",
-        cod: 100000,
-        weight: 560,
-        serviceDeliver: "SHIPPING_ECONOMICAL"
+        description: "",
+        category_id: null,
+        country: "",
+        receiver_info: "",
+        receiver_Province_Id: null,
+        sender_Province_Id: null,
+        sender_info: "",
+        status: "",
+        cod: null,
+        weight: null,
+        serviceDeliver: ""
     });
 
     useEffect(() => {
         fetchData();
         fetchData2();
         fetchData3();
+        fetchData4();
     }, []);
 
     const fetchData = () => {
@@ -66,6 +67,17 @@ const AddOrder = (props) => {
         )
     }
 
+    const fetchData4 = () => {
+        getOrderById(id).then(response => {
+            console.log("Get by id",response.data)
+            setProductData(response.data)
+        }).catch(
+            error => {
+                toast.error((error && error.message) || 'Oops! Có điều gì đó xảy ra. Vui lòng thử lại!');
+            }
+        )
+    }
+
 
     const { authenticated, currentUser, role, onLogout } = props;
 
@@ -88,14 +100,14 @@ const AddOrder = (props) => {
     const handleSubmit = (event) => {
         event.preventDefault();
 
-        addOrderBillOfLading(productData)
-        .then((response) => {
-            console.log(response.data);
-            toast.success('Tạo vận đơn thành công!!');
-        })
-        .catch((error) => {
-            console.log(error);
-        });
+        editOrderBillOfLading(id, productData)
+            .then((response) => {
+                console.log(response.data);
+                toast.success('Cập nhật vận đơn thành công!!');
+            })
+            .catch((error) => {
+                console.log(error);
+            });
 
     };
 
@@ -112,7 +124,7 @@ const AddOrder = (props) => {
 
     const { description, user_id, category_id, country, receiver_info, receiver_Province_Id, sender_Province_Id, sender_info, status, cod, weight, serviceDeliver } = productData;
 
-
+    console.log(productData)
     return (
         <div className="wrapper">
             <nav id="sidebar" className="sidebar js-sidebar">
@@ -130,31 +142,11 @@ const AddOrder = (props) => {
                 <main style={{ margin: "20px 20px 20px 20px" }}>
                     <div className="card">
                         <div className="card-header">
-                            <h5 className="card-title">Tạo vận đơn</h5>
-                            <h6 className="card-subtitle text-muted"> Tạo vận đơn cho khách hàng của TVL Post.</h6>
+                            <h5 className="card-title">Cập nhật vận đơn</h5>
+                            <h6 className="card-subtitle text-muted"> Cập nhật vận đơn cho khách hàng của TVL Post.</h6>
                         </div>
                         <div className="card-body">
                             <form onSubmit={handleSubmit}>
-
-                                <div className="mb-3">
-                                    <label className="form-label" htmlFor="locationId">Khách hàng</label>
-                                    <select
-                                        className="form-select"
-                                        name="user_id"
-                                        value={user_id}
-                                        onChange={handleInputChange}
-                                    >
-                                        <option value={0}>Chọn...</option>
-                                        {tableData2?.map((item) => {
-                                            if(item.roles[0].name === "ROLE_CUSTOMER") {
-                                                return (
-                                                    <option  value={item.id}>{item.name}</option>
-                                                )
-                                            }
-                                        }
-                                        )}
-                                    </select>
-                                </div>
 
                                 <div className="mb-3">
                                     <label className="form-label" htmlFor="locationId">Thể loại</label>
@@ -166,7 +158,7 @@ const AddOrder = (props) => {
                                     >
                                         <option value={0}>Chọn...</option>
                                         {tableData?.map((item) => (
-                                            <option  value={item.id}>{item.name}</option>
+                                            <option value={item.id}>{item.name}</option>
                                         ))}
                                     </select>
                                 </div>
@@ -213,9 +205,15 @@ const AddOrder = (props) => {
                                         onChange={handleInputChange}
                                     >
                                         <option value={0}>Chọn...</option>
-                                        {tableData3?.map((item) => (
-                                            <option  value={item.id}>{item.name}</option>
-                                        ))}
+                                        {tableData3?.map((item) => {
+                                            if (productData.receiver_Province_Id === item.id) {
+                                                return (
+                                                    <option value={item.id}>{item.name}</option>
+                                                )
+                                            }
+                                        }
+
+                                        )}
                                     </select>
                                 </div>
                                 <div className="mb-3">
@@ -228,7 +226,7 @@ const AddOrder = (props) => {
                                     >
                                         <option value={0}>Chọn...</option>
                                         {tableData3?.map((item) => (
-                                            <option  value={item.id}>{item.name}</option>
+                                            <option value={item.id}>{item.name}</option>
                                         ))}
                                     </select>
                                 </div>
@@ -293,4 +291,4 @@ const AddOrder = (props) => {
     );
 };
 
-export default AddOrder;
+export default EditOrder;

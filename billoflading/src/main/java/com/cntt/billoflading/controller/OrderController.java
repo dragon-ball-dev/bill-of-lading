@@ -5,6 +5,7 @@ import com.cntt.billoflading.controller.base.BaseController;
 import com.cntt.billoflading.controller.base.message.ExtendedMessage;
 import com.cntt.billoflading.domain.dto.OrderDTO;
 import com.cntt.billoflading.domain.enums.OrderStatus;
+import com.cntt.billoflading.domain.payload.request.UpdateStatusOrder;
 import com.cntt.billoflading.services.OrderService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -126,4 +127,20 @@ public class OrderController extends BaseController {
         return createSuccessResponse("cancel order",  orderService.CancelOrder(id));
     }
 
+    @PutMapping("/checkin")
+    @Operation(summary = "update status of order")
+    @ApiResponse(responseCode = Constant.API_RESPONSE.API_STATUS_OK_STR, description = "update a order successful",
+            content = {@Content(mediaType = "application/json",
+                    schema = @Schema(implementation = ExtendedMessage.class))})
+    @ApiResponse(responseCode = Constant.API_RESPONSE.API_STATUS_BAD_REQUEST_STR, description = "Input invalid",
+            content = {@Content(mediaType = "application/json",
+                    schema = @Schema(implementation = ExtendedMessage.class))})
+    @ApiResponse(responseCode = Constant.API_RESPONSE.API_STATUS_INTERNAL_SERVER_ERROR_STR, description = "Internal Server Error",
+            content = {@Content(mediaType = "application/json",
+                    schema = @Schema(implementation = ExtendedMessage.class))})
+    private ResponseEntity<?> updateStatusOrder(
+            @RequestBody UpdateStatusOrder UpdateStatusOrder
+    ){
+        return createSuccessResponse("update order", orderService.UpdateStatusOrder(UpdateStatusOrder));
+    }
 }

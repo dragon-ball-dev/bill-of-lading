@@ -15,9 +15,7 @@ const Nav = (props) => {
             <a className="nav-icon dropdown-toggle d-inline-block d-sm-none" href="#" data-bs-toggle="dropdown">
               <i className="align-middle" data-feather="settings"></i>
             </a>
-            <button type="button" className="btn btn-info"><a className="dropdown-item" href="/sell-product">Tạo vận đơn</a></button>&nbsp;
             <button type="button" className="btn btn-info"><a className="dropdown-item" onClick={onLogout}>Đăng xuất</a></button>
-
             <div className="nav-link d-none d-sm-inline-block" >
               <img src="../../assets/img/avatars/avatar-2.jpg" className="avatar img-fluid rounded me-1" alt="Charles Hall" /><a href="/profile-admin" style={{textDecoration: "none"}}></a> 
             </div>
