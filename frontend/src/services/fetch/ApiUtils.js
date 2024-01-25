@@ -266,6 +266,18 @@ export function editCategory(id,category) {
     });
 }
 
+export function editBannerById(id,category) {
+    if(!localStorage.getItem(ACCESS_TOKEN)) {
+        return Promise.reject("No access token set.");
+    }
+
+    return request({
+        url: API_BASE_URL + "/banner/"+id,
+        method: 'POST',
+        body: JSON.stringify(category)
+    });
+}
+
 export function  updateCartItemQuantity(cart) {
     if(!localStorage.getItem(ACCESS_TOKEN)) {
         return Promise.reject("No access token set.");
@@ -393,6 +405,42 @@ export function editStore(id, store) {
     return request({
         url: API_BASE_URL + "/store/update/"+id,
         method: 'PUT',
+        body: JSON.stringify(store)
+    });
+}
+
+export function editServices(id, store) {
+    if(!localStorage.getItem(ACCESS_TOKEN)) {
+        return Promise.reject("No access token set.");
+    }
+
+    return request({
+        url: API_BASE_URL + "/service_transportation/"+id,
+        method: 'PUT',
+        body: JSON.stringify(store)
+    });
+}
+
+export function editProvince(id, store) {
+    if(!localStorage.getItem(ACCESS_TOKEN)) {
+        return Promise.reject("No access token set.");
+    }
+
+    return request({
+        url: API_BASE_URL + "/province/"+id,
+        method: 'POST',
+        body: JSON.stringify(store)
+    });
+}
+
+export function editDistrict(id, store) {
+    if(!localStorage.getItem(ACCESS_TOKEN)) {
+        return Promise.reject("No access token set.");
+    }
+
+    return request({
+        url: API_BASE_URL + "/district/"+id,
+        method: 'POST',
         body: JSON.stringify(store)
     });
 }
@@ -536,6 +584,40 @@ export function getStockById(id) {
     });
 }
 
+
+export function getProvinceById(id) {
+    if(!localStorage.getItem(ACCESS_TOKEN)) {
+        return Promise.reject("No access token set.");
+    }
+
+    return request({
+        url: API_BASE_URL + "/province/"+id,
+        method: 'GET'
+    });
+}
+
+export function getDistrictById(id) {
+    if(!localStorage.getItem(ACCESS_TOKEN)) {
+        return Promise.reject("No access token set.");
+    }
+
+    return request({
+        url: API_BASE_URL + "/district/"+id,
+        method: 'GET'
+    });
+}
+
+export function getServicesById(id) {
+    if(!localStorage.getItem(ACCESS_TOKEN)) {
+        return Promise.reject("No access token set.");
+    }
+
+    return request({
+        url: API_BASE_URL + "/service_transportation/"+id,
+        method: 'GET'
+    });
+}
+
 export function deleteCategory(id) {
     if(!localStorage.getItem(ACCESS_TOKEN)) {
         return Promise.reject("No access token set.");
@@ -543,6 +625,40 @@ export function deleteCategory(id) {
 
     return request({
         url: API_BASE_URL + "/category?id="+id,
+        method: 'DELETE'
+    });
+}
+
+export function deleteProvince(id) {
+    if(!localStorage.getItem(ACCESS_TOKEN)) {
+        return Promise.reject("No access token set.");
+    }
+
+    return request({
+        url: API_BASE_URL + "/province/"+id,
+        method: 'DELETE'
+    });
+}
+
+export function deleteDistrict(id) {
+    if(!localStorage.getItem(ACCESS_TOKEN)) {
+        return Promise.reject("No access token set.");
+    }
+
+    return request({
+        url: API_BASE_URL + "/district/"+id,
+        method: 'DELETE'
+    });
+}
+
+
+export function deleteBanner(id) {
+    if(!localStorage.getItem(ACCESS_TOKEN)) {
+        return Promise.reject("No access token set.");
+    }
+
+    return request({
+        url: API_BASE_URL + "/banner/"+id,
         method: 'DELETE'
     });
 }
@@ -730,6 +846,17 @@ export function getCategoryById(id) {
 
     return request({
         url: API_BASE_URL + "/category/"+id,
+        method: 'GET'
+    });
+}
+
+export function getBannerById(id) {
+    if(!localStorage.getItem(ACCESS_TOKEN)) {
+        return Promise.reject("No access token set.");
+    }
+
+    return request({
+        url: API_BASE_URL + "/banner/"+id,
         method: 'GET'
     });
 }

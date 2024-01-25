@@ -53,17 +53,17 @@ function ServicesManager(props) {
         setCurrentPage(pageNumber);
     };
 
-    const handleDeleteCategory = (id) => {
-        // deleteMaintenance(id).then(response => {
-        //     console.log(response.message)
-        //     toast.success("Xóa thể loại thành công")
-        //     fetchData();
-        // }).catch(
-        //     error => {
-        //         toast.error((error && error.message) || 'Oops! Có điều gì đó xảy ra. Vui lòng thử lại!');
-        //     }
-        // )
-    }
+    // const handleDeleteCategory = (id) => {
+    //     deleteMaintenance(id).then(response => {
+    //         console.log(response.message)
+    //         toast.success("Xóa dịch vụ thành công")
+    //         fetchData();
+    //     }).catch(
+    //         error => {
+    //             toast.error((error && error.message) || 'Oops! Có điều gì đó xảy ra. Vui lòng thử lại!');
+    //         }
+    //     )
+    // }
 
     if (!props.authenticated) {
         return <Navigate
@@ -99,7 +99,7 @@ function ServicesManager(props) {
                             <div id="datatables-buttons_wrapper" className="dataTables_wrapper dt-bootstrap5 no-footer"><div className="row"><div className="col-sm-12 col-md-6"><div className="dt-buttons btn-group flex-wrap">
                                 <button className="btn btn-secondary buttons-copy buttons-html5" tabindex="0" aria-controls="datatables-buttons" type="button"><a onClick={handleRedirectAddCategory}>Thêm dịch vụ</a></button>
                             </div></div>
-                                <div className="col-sm-12 col-md-6" style={{marginLeft: "650px"}}>
+                                <div className="col-sm-12 col-md-6" style={{ marginLeft: "650px" }}>
                                     <div>
                                         <ul>
                                             <li>SHIPPING_ECONOMICAL - Giao hàng tiết kiệm</li>
@@ -119,7 +119,7 @@ function ServicesManager(props) {
                                         </ul>
                                     </div>
                                 </div>
-    
+
                             </div>
                                 <div className="row dt-row">
                                     <div className="col-sm-12"><table id="datatables-buttons" className="table table-striped dataTable no-footer dtr-inline" style={{ width: "100%" }} aria-describedby="datatables-buttons_info">
@@ -148,8 +148,6 @@ function ServicesManager(props) {
                                                     <td className="dtr-control sorting_1" tabindex="0">{item?.estimatedTime}</td>
                                                     <td>
                                                         <a href="#" onClick={() => handleEditCategory(item.id)} data-toggle="tooltip" tabindex="0" data-placement="bottom" title="Sửa"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-edit-2 align-middle"><path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z"></path></svg></a>
-                                                        &nbsp;&nbsp;&nbsp;
-                                                        <a href="#" onClick={() => handleDeleteCategory(item.id)} data-toggle="tooltip" tabindex="0" data-placement="bottom" title="Xóa"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-trash align-middle"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg></a>
                                                     </td>
 
                                                 </tr>

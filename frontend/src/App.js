@@ -70,6 +70,10 @@ import AddOrderUser from './pages/user/AddOrder';
 import OrderHistory from './pages/user/OrderHistory';
 import EditOrder from './pages/admin/EditOrder';
 import UpdateStatus from './pages/admin/UpdateStatus';
+import EditBanner from './pages/admin/EditBanner';
+import EditServices from './pages/admin/EditServices';
+import EditDistrict from './pages/admin/EditDistrict';
+import EditProvince from './pages/admin/EditProvince';
 
 
 function App() {
@@ -213,8 +217,13 @@ function App() {
           <Route exact path="/add-province" element={<AddProvince authenticated={authenticated} role={role} currentUser={currentUser} onLogout={handleLogout} />} />
           <Route exact path="/add-district" element={<AddDistrict authenticated={authenticated} role={role} currentUser={currentUser} onLogout={handleLogout} />} />
 
+
           <Route exact path="/update-status/:id" element={<UpdateStatus authenticated={authenticated} role={role} currentUser={currentUser} onLogout={handleLogout} />} />
           <Route exact path="/edit-order/:id" element={<EditOrder authenticated={authenticated} role={role} currentUser={currentUser} onLogout={handleLogout} />} />
+          <Route exact path="/edit-province/:id" element={<EditProvince authenticated={authenticated} role={role} currentUser={currentUser} onLogout={handleLogout} />} />
+          <Route exact path="/edit-district/:id" element={<EditDistrict authenticated={authenticated} role={role} currentUser={currentUser} onLogout={handleLogout} />} />
+          <Route exact path="/edit-services/:id" element={<EditServices authenticated={authenticated} role={role} currentUser={currentUser} onLogout={handleLogout} />} />
+          <Route exact path="/edit-banner/:id" element={<EditBanner authenticated={authenticated} role={role} currentUser={currentUser} onLogout={handleLogout} />} />
           <Route exact path="/edit-stock/:id" element={<EditStock authenticated={authenticated} role={role} currentUser={currentUser} onLogout={handleLogout} />} />
           <Route exact path="/edit-customer/:id" element={<EditCustomer authenticated={authenticated} role={role} currentUser={currentUser} onLogout={handleLogout} />} />
           <Route exact path="/edit-store/:id" element={<EditStore authenticated={authenticated} role={role} currentUser={currentUser} onLogout={handleLogout} />} />

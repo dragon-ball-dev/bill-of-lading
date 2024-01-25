@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Navigate, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
-import { deleteCategory, getAllCategory, getAllProvince } from "../../services/fetch/ApiUtils";
+import { deleteCategory, deleteProvince, getAllCategory, getAllProvince } from "../../services/fetch/ApiUtils";
 import SidebarNav from "./SidebarNav";
 import Nav from "./Nav";
 import Pagination from "./Pagnation";
@@ -39,11 +39,11 @@ function ProvinceManager(props){
     };
 
     const handleRedirectAddCategory = () => {
-        history('/add-category')
+        history('/add-province')
     }
 
     const handleEditCategory = (id) => {
-        history('/edit-category/' + id)
+        history('/edit-province/' + id)
     }
 
 
@@ -52,7 +52,7 @@ function ProvinceManager(props){
     };
 
     const handleDeleteCategory = (id) => {
-        deleteCategory(id).then(response => {
+        deleteProvince(id).then(response => {
             console.log(response.message)
             toast.success("Xóa tỉnh thành công")
             fetchData();
